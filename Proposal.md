@@ -63,7 +63,7 @@ Get users current location to generate default list to show on homepage and sear
 
 ## Timeline
 
-###Week One
+### Week One
 
 - Initiate backend with Django. 
 - Create Restaurant Model.   
@@ -72,7 +72,7 @@ Get users current location to generate default list to show on homepage and sear
 - Create review Model.  
 - Create basic website with forms to login and sign up and leave a review.
 
-###Week Two
+### Week Two
 
 - Build certification system. 
 - Design quiz and referral system in JS.  
@@ -80,7 +80,7 @@ Get users current location to generate default list to show on homepage and sear
 - Fully style HTML pages: Home, Search, Quiz, Login/SignUp, User Profile. 
 - Build restaurant list search engine and HTML. 
 
-###Week Three
+### Week Three
 - Load home page on Geo location. 
 - Style it up, make sure it is fully responsive.  
 - Beta test quiz system, review system, user profiles and settings.  
