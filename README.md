@@ -1,4 +1,4 @@
-#Behind the Counter
+# **Behind the counter**
 
 Project repo for yelp-like restaurant review service based on industry experience. 
 
