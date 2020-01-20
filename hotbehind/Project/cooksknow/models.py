@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from users.models import CustomUser
 
@@ -9,6 +10,8 @@ class Setting(models.Model):
 class Cuisine(models.Model):
     
     options = models.TextField(max_length=10)
+    def __str__(self):
+        return self.options
     
 
 class Restaurant(models.Model):
@@ -25,6 +28,11 @@ class Restaurant(models.Model):
 
     #not sure how to incorporate ratings from reviews
     # rating = models.ForeignKey(Review, null=True, on_delete=models.CASCADE)
+    def get_absolute_url(self):
+        return reverse('cooksknow:detail', args=(self.id,))
+
+    def __str__(self):
+        return self.name
 
 class Review(models.Model):
     body = models.TextField(max_length=1000, blank=False,

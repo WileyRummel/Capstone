@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+<h1>test</h1>
+{% block content %} 
+    
+    <p>{{ restaurant.name }} located at: {{ restaurant.location }}.  Proudly serving {{ restaurant.cuisines.all }} in an intimate {{ restaurant.settings.all }} environment.</p>
+
+
+
+{% endblock %}
