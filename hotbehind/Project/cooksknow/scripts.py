@@ -1,12 +1,16 @@
-from .models import Cuisine, Setting
+# if __name__ == '__main__':
+#     main()
+
+from .models import Cuisine, Setting, Restaurant
 
 
 
-CUISINE_CHOICES = [
-    'African', 'American', 'Argentine', 'Asian', 'BBQ', 'Bagels', 'Bakery', 'Bar Food', 'Beverages', 'Brazilian', 'Breakfast', 'British', 'Bubble Tea', 'Burger', 'Cafe', 'Cajun', 'California', 'Cantonese', 'Caribbean', 'Chilean', 'Chinese', 'Coffee and Tea', 'Colombian', 'Creole', 'Crepes', 'Cuban', 'Deli', 'Desserts', 'Dim Sum', 'Diner', 'Donuts', 'Drinks Only', 'Eastern European', 'Ethiopian', 'European', 'Fast Food', 'Filipino', 'Fish and Chips', 'Fondue', 'French', 'Frozen Yogurt', 'Fusion', 'German', 'Greek', 'Grill', 'Hawaiian', 'Healthy Food', 'Ice Cream', 'Indian', 'Indonesian', 'International', 'Iranian', 'Irish', 'Israeli', 'Italian', 'Jamaican', 'Japanese', 'Juices', 'Kebab', 'Korean', 'Laotian', 'Latin American', 'Lebanese', 'Malaysian', 'Mediterranean', 'Mexican', 'Middle Eastern', 'Mongolian', 'Moroccan', 'Nepalese', 'New American', 'New Mexican', 'Pacific', 'Pacific Northwest', 'Patisserie', 'Peruvian', 'Pizza', 'Polish', 'Pub Food', 'Pub Grub', 'Ramen', 'Russian', 'Salad', 'Salvadorean', 'Sandwich', 'Scandinavian', 'Seafood', 'Soul Food', 'Southern', 'Southwestern', 'Spanish', 'Steak', 'Sushi', 'Swedish', 'Taco', 'Taiwanese', 'Tapas', 'Tea', 'Teriyaki', 'Tex-Mex', 'Thai', 'Tibetan', 'Turkish', 'Vegetarian', 'Vietnamese']
-SETTING_CHOICES = [
-    'Delivery', 'Dine-out', 'Nightlife', 'Catching-up', 'Takeaway', 'Cafes', 'Daily Menus', 'Breakfast', 'Lunch', 'Dinner', 'Pubs&Bars', 'Pocket Friendly Delivery', 'Clubs & Lounges'
-]
+
+# CUISINE_CHOICES = [
+#     'African', 'American', 'Argentine', 'Asian', 'BBQ', 'Bagels', 'Bakery', 'Bar Food', 'Beverages', 'Brazilian', 'Breakfast', 'British', 'Bubble Tea', 'Burger', 'Cafe', 'Cajun', 'California', 'Cantonese', 'Caribbean', 'Chilean', 'Chinese', 'Coffee and Tea', 'Colombian', 'Creole', 'Crepes', 'Cuban', 'Deli', 'Desserts', 'Dim Sum', 'Diner', 'Donuts', 'Drinks Only', 'Eastern European', 'Ethiopian', 'European', 'Fast Food', 'Filipino', 'Fish and Chips', 'Fondue', 'French', 'Frozen Yogurt', 'Fusion', 'German', 'Greek', 'Grill', 'Hawaiian', 'Healthy Food', 'Ice Cream', 'Indian', 'Indonesian', 'International', 'Iranian', 'Irish', 'Israeli', 'Italian', 'Jamaican', 'Japanese', 'Juices', 'Kebab', 'Korean', 'Laotian', 'Latin American', 'Lebanese', 'Malaysian', 'Mediterranean', 'Mexican', 'Middle Eastern', 'Mongolian', 'Moroccan', 'Nepalese', 'New American', 'New Mexican', 'Pacific', 'Pacific Northwest', 'Patisserie', 'Peruvian', 'Pizza', 'Polish', 'Pub Food', 'Pub Grub', 'Ramen', 'Russian', 'Salad', 'Salvadorean', 'Sandwich', 'Scandinavian', 'Seafood', 'Soul Food', 'Southern', 'Southwestern', 'Spanish', 'Steak', 'Sushi', 'Swedish', 'Taco', 'Taiwanese', 'Tapas', 'Tea', 'Teriyaki', 'Tex-Mex', 'Thai', 'Tibetan', 'Turkish', 'Vegetarian', 'Vietnamese']
+# SETTING_CHOICES = [
+#     'Delivery', 'Dine-out', 'Nightlife', 'Catching-up', 'Takeaway', 'Cafes', 'Daily Menus', 'Breakfast', 'Lunch', 'Dinner', 'Pubs&Bars', 'Pocket Friendly Delivery', 'Clubs & Lounges'
+# ]
 
 RESTAURANTS = [  # 34 long so far.
     {'name': 'Pok Pok', 'url': 'https://www.zomato.com/portland/pok-pok-richmond?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1',
@@ -76,15 +80,22 @@ RESTAURANTS = [  # 34 long so far.
     {'name': 'Fire on the Mountain Buffalo Wings - Burnside', 'url': 'https://www.zomato.com/portland/fire-on-the-mountain-buffalo-wings-burnside-kerns?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1',
         'location': '1708 East Burnside Street 97214', 'hours': '11 AM to 12 Midnight (Mon-Sun)', 'cuisine': 'BBQ, Burger, Bar Food'},
     {'name': 'Blue Star Donuts', 'url': 'https://www.zomato.com/portland/blue-star-donuts-portland?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1', 'location': '1237 SW Washington St, Portland 97205', 'hours': '7 AM to 7 PM (Mon-Fri),8 AM to 7 PM (Sat-Sun)', 'cuisine': 'Breakfast, Vegetarian, Donuts'}]
-print(len(RESTAURANTS))
+# print(len(RESTAURANTS))
 
 
-for x in CUISINE_CHOICES:
-    Cuisine.objects.create(options=x)  # error no 'objects' member
+# for x in CUISINE_CHOICES:
+#     Cuisine.objects.create(options=x)  # error no 'objects' member
 
-for y in SETTING_CHOICES:
-    Setting.objects.create(options=y) 
+# for y in SETTING_CHOICES:
+#     Setting.objects.create(options=y) 
 
+
+
+#script to create restaurants in the database.  Adds required fields (name, website, location, hours) and then iterates through cuisines and adds them to the manytomany relatioships
 # for z in RESTAURANTS:
-#     for a in z:
+#     r = Restaurant.objects.create(name=z['name'], website=z['url'], location=z['location'], hours=z['hours'])
+#     cuisine_list = z['cuisine'].split(', ')
+#     for a in cuisine_list:
+#         r.cuisines.add(Cuisine.objects.get(options = a))
 
+print("success")

@@ -30,13 +30,14 @@ class Restaurant(models.Model):
     reviewers = models.ManyToManyField(CustomUser, related_name="Reviews", through="Review") #iterate through this to get the rating.  for x in reviewers x.rating
     cuisines = models.ManyToManyField(Cuisine, related_name="cuisines",blank=True)
     settings = models.ManyToManyField(Setting, related_name="settings",blank=True)
-
+    hours = models.TextField(max_length=50, blank=True)
 
     def get_absolute_url(self):
         return reverse('cooksknow:detail', args=(self.id,))
 
     def __str__(self):
         return self.name
+    
 
 class Review(models.Model):
     body = models.TextField(max_length=1000, blank=False,
@@ -56,6 +57,7 @@ class Review(models.Model):
     cuisines = models.ManyToManyField(Cuisine, related_name="ReviewCuisines", blank=True)
     settings = models.ManyToManyField(Setting, related_name="ReviewSettings", blank=True)
     created = models.DateTimeField(auto_now_add=True)
+
 
     def get_absolute_url(self):
         return reverse('cooksknow:reviewdetail', args=(self.id,))
