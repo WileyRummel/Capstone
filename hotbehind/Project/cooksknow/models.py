@@ -1,15 +1,20 @@
 from django.db import models
 from django.urls import reverse
+# from django.db.models import DateTimeField
 
 from users.models import CustomUser
 
 class Setting(models.Model):
     
     options = models.TextField(max_length=4)
+    
+    def __str__(self):
+        return self.options
 
 class Cuisine(models.Model):
     
     options = models.TextField(max_length=10)
+    
     def __str__(self):
         return self.options
     
@@ -22,12 +27,11 @@ class Restaurant(models.Model):
 
     #the relationship fields to other models.
 
-    reviewers = models.ManyToManyField(CustomUser, related_name="Reviews", through="Review")
+    reviewers = models.ManyToManyField(CustomUser, related_name="Reviews", through="Review") #iterate through this to get the rating.  for x in reviewers x.rating
     cuisines = models.ManyToManyField(Cuisine, related_name="cuisines",blank=True)
     settings = models.ManyToManyField(Setting, related_name="settings",blank=True)
 
-    #not sure how to incorporate ratings from reviews
-    # rating = models.ForeignKey(Review, null=True, on_delete=models.CASCADE)
+
     def get_absolute_url(self):
         return reverse('cooksknow:detail', args=(self.id,))
 
@@ -46,6 +50,14 @@ class Review(models.Model):
         (5, 'Exceptional'),
     )
 
-    rating = models.IntegerField(choices=RATING_CHOICES, blank=False)
+    rating = models.IntegerField(choices=RATING_CHOICES, blank=False, null=True)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    restaurantrev = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    cuisines = models.ManyToManyField(Cuisine, related_name="ReviewCuisines", blank=True)
+    settings = models.ManyToManyField(Setting, related_name="ReviewSettings", blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def get_absolute_url(self):
+        return reverse('cooksknow:reviewdetail', args=(self.id,))
+
+

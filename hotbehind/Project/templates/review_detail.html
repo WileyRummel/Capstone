@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ <h3> {{ review.author }}</h3>
+ <p> {{ review.created}}</p>
+ <h3>{{ review.restaurant }} </h3>
+ <h3> {{ review.rating }} </h3>
+ <p> {{ review.body }}</p>
+ <p> Cuisines: {{ review.cuisines.all }}. Settings: {{ review.settings.all }}</p>
+
+
+
+{% endblock content %}

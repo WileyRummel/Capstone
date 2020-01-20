@@ -1,13 +1,14 @@
 from .models import Cuisine, Setting
 
 
+
 CUISINE_CHOICES = [
     'African', 'American', 'Argentine', 'Asian', 'BBQ', 'Bagels', 'Bakery', 'Bar Food', 'Beverages', 'Brazilian', 'Breakfast', 'British', 'Bubble Tea', 'Burger', 'Cafe', 'Cajun', 'California', 'Cantonese', 'Caribbean', 'Chilean', 'Chinese', 'Coffee and Tea', 'Colombian', 'Creole', 'Crepes', 'Cuban', 'Deli', 'Desserts', 'Dim Sum', 'Diner', 'Donuts', 'Drinks Only', 'Eastern European', 'Ethiopian', 'European', 'Fast Food', 'Filipino', 'Fish and Chips', 'Fondue', 'French', 'Frozen Yogurt', 'Fusion', 'German', 'Greek', 'Grill', 'Hawaiian', 'Healthy Food', 'Ice Cream', 'Indian', 'Indonesian', 'International', 'Iranian', 'Irish', 'Israeli', 'Italian', 'Jamaican', 'Japanese', 'Juices', 'Kebab', 'Korean', 'Laotian', 'Latin American', 'Lebanese', 'Malaysian', 'Mediterranean', 'Mexican', 'Middle Eastern', 'Mongolian', 'Moroccan', 'Nepalese', 'New American', 'New Mexican', 'Pacific', 'Pacific Northwest', 'Patisserie', 'Peruvian', 'Pizza', 'Polish', 'Pub Food', 'Pub Grub', 'Ramen', 'Russian', 'Salad', 'Salvadorean', 'Sandwich', 'Scandinavian', 'Seafood', 'Soul Food', 'Southern', 'Southwestern', 'Spanish', 'Steak', 'Sushi', 'Swedish', 'Taco', 'Taiwanese', 'Tapas', 'Tea', 'Teriyaki', 'Tex-Mex', 'Thai', 'Tibetan', 'Turkish', 'Vegetarian', 'Vietnamese']
 SETTING_CHOICES = [
     'Delivery', 'Dine-out', 'Nightlife', 'Catching-up', 'Takeaway', 'Cafes', 'Daily Menus', 'Breakfast', 'Lunch', 'Dinner', 'Pubs&Bars', 'Pocket Friendly Delivery', 'Clubs & Lounges'
 ]
 
-RESTAURANTS = [ #34 long so far.  
+RESTAURANTS = [  # 34 long so far.
     {'name': 'Pok Pok', 'url': 'https://www.zomato.com/portland/pok-pok-richmond?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1',
         'location': '3226 SE Division Street 97202', 'hours': '11:30 AM to 10 PM (Mon-Sun)', 'cuisine': 'Thai'},
     {'name': 'Screen Door', 'url': 'https://www.zomato.com/portland/screen-door-kerns?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1', 'location': '2337 E Burnside Street 97214',
@@ -77,5 +78,13 @@ RESTAURANTS = [ #34 long so far.
     {'name': 'Blue Star Donuts', 'url': 'https://www.zomato.com/portland/blue-star-donuts-portland?utm_source=api_basic_user&utm_medium=api&utm_campaign=v2.1', 'location': '1237 SW Washington St, Portland 97205', 'hours': '7 AM to 7 PM (Mon-Fri),8 AM to 7 PM (Sat-Sun)', 'cuisine': 'Breakfast, Vegetarian, Donuts'}]
 print(len(RESTAURANTS))
 
+
 for x in CUISINE_CHOICES:
-    Cuisine.objects.create(options=x) #error no 'objects' member
+    Cuisine.objects.create(options=x)  # error no 'objects' member
+
+for y in SETTING_CHOICES:
+    Setting.objects.create(options=y) 
+
+# for z in RESTAURANTS:
+#     for a in z:
+
