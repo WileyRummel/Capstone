@@ -4,7 +4,12 @@ from django.contrib.auth.models import AbstractUser
 class CustomUser(AbstractUser):
     approved = models.BooleanField(default=False) #default for users to not be approved.  Passing a quiz will toggle to True
     
-    ROLE_CHOICES = ['FOH','BOH','CHEF','GM']
+    ROLE_CHOICES = [
+        (1,'FOH'),
+        (2,'BOH'),
+        (3,'CHEF'),
+        (4,'GM')
+        ]
     role = models.CharField(max_length=4, null=True, choices=ROLE_CHOICES) #Default to null, lets user select BOH or FOH.  (BOH=True | FOH=False)
 
 

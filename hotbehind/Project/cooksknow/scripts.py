@@ -78,4 +78,4 @@ RESTAURANTS = [ #34 long so far.
 print(len(RESTAURANTS))
 
 for x in CUISINE_CHOICES:
-    Cuisine.objects.create(options=x)
+    Cuisine.objects.create(options=x) #error no 'objects' member
