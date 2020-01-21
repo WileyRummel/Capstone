@@ -24,13 +24,13 @@ class Restaurant(models.Model):
     name = models.CharField(max_length=100, null=False, unique=False)
     location = models.CharField(max_length=500,blank=True)
     website = models.URLField(null=True,blank=True)
+    hours = models.TextField(max_length=50, blank=True)
 
     #the relationship fields to other models.
 
     reviewers = models.ManyToManyField(CustomUser, related_name="Reviews", through="Review") #iterate through this to get the rating.  for x in reviewers x.rating
     cuisines = models.ManyToManyField(Cuisine, related_name="cuisines",blank=True)
     settings = models.ManyToManyField(Setting, related_name="settings",blank=True)
-    hours = models.TextField(max_length=50, blank=True)
 
     def get_absolute_url(self):
         return reverse('cooksknow:detail', args=(self.id,))
@@ -49,7 +49,7 @@ class Review(models.Model):
         (3, 'Good'),
         (4, 'Great'),
         (5, 'Exceptional'),
-    )
+    ) #this comes back as the string, but HTML display the number.  Research issue
 
     rating = models.IntegerField(choices=RATING_CHOICES, blank=False, null=True)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -61,5 +61,3 @@ class Review(models.Model):
 
     def get_absolute_url(self):
         return reverse('cooksknow:reviewdetail', args=(self.id,))
-
-
