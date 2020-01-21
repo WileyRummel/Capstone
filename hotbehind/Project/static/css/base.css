@@ -1,0 +1,10 @@
+body {
+    background: #91A3FE;
+    color: hotpink;
+}
+p {
+    color: indianred;
+}
+h1 {
+    text-shadow: 2px 2px rgb(245, 42, 143);
+}
