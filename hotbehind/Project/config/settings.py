@@ -133,6 +133,6 @@ LOGOUT_REDIRECT_URL = 'home'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES':[
-        'rest_framework.permissions.AllowAny',
-    ]
+        'rest_framework.permissions.IsAuthenticated',
+    ] #this is letting anyone do anthing.
 }
