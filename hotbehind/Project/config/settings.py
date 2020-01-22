@@ -37,10 +37,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users.apps.UsersConfig',
-    'cooksknow.apps.CooksknowConfig',
-    'rest_framework',
-    'apis.apps.ApisConfig',
+
+    #local Apps
+    'users.apps.UsersConfig', #local custumUser app
+    'cooksknow.apps.CooksknowConfig', #local app
+    'apis.apps.ApisConfig', #API App
+
+    #third party apps
+    'rest_framework', #API
+    # 'rest_framework.authtoken', # Authentication Tokens
+    # 'rest_auth',
+
 ]
 
 MIDDLEWARE = [
@@ -134,5 +141,9 @@ LOGOUT_REDIRECT_URL = 'home'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES':[
         'rest_framework.permissions.IsAuthenticated',
-    ] #this is letting anyone do anthing.
+    ], # Only authenticated users have basic permissions. More explicit permissions are present in the API permissions.py file.  
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+    ], # Setting up JWS Token Authentication system
 }

@@ -6,10 +6,18 @@ from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser
 # Register your models here.
 
+
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
-    list_display = ['email','username','role','approved']
+    list_display = ['username','email', 'role', 'approved']
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {'fields': ('approved', 'role')}),
+    )
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        (None, {'fields': ('approved', 'role')}),
+    )
+
 
 admin.site.register(CustomUser, CustomUserAdmin)
