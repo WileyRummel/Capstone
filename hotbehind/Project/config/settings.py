@@ -45,8 +45,8 @@ INSTALLED_APPS = [
 
     #third party apps
     'rest_framework', #API
-    # 'rest_framework.authtoken', # Authentication Tokens
-    # 'rest_auth',
+    'rest_framework.authtoken', # Authentication Tokens
+    # 'rest_auth'
 
 ]
 
@@ -142,8 +142,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES':[
         'rest_framework.permissions.IsAuthenticated',
     ], # Only authenticated users have basic permissions. More explicit permissions are present in the API permissions.py file.  
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
+    # 'DEFAULT_AUTHENTICATION_CLASSES': [
+        # 'rest_framework.authentication.SessionAuthentication',
         # 'rest_framework.authentication.TokenAuthentication',
-    ], # Setting up JWS Token Authentication system
+    # ], # Setting up JWS Token Authentication system
 }

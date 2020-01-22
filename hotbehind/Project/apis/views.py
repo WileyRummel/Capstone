@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
-from .permissions import IsAuthorOrReadOnly, IsApproved, IsAuthor
+from .permissions import IsAuthorOrReadOnly, IsApproved, IsAuthor, IsApprovedOrReadOnly
 
 from cooksknow import models
 from .serializers import RestaurantSerializer, ReviewSerializer, CuisineSerializer, SettingSerializer
@@ -9,7 +9,7 @@ from .serializers import RestaurantSerializer, ReviewSerializer, CuisineSerializ
 
 class RestaurantViewSet(viewsets.ModelViewSet):
     #giving permission only to logged in users
-    permission_classes = (IsAuthorOrReadOnly, IsApproved)
+    permission_classes = (IsAuthorOrReadOnly, IsApprovedOrReadOnly)
 
     #getting all the database objects from data models and serializers
     queryset = models.Restaurant.objects.all()
@@ -18,7 +18,7 @@ class RestaurantViewSet(viewsets.ModelViewSet):
 class ReviewViewSet(viewsets.ModelViewSet):
     #giving permission only to logged in users
 
-    permission_classes = (IsAuthorOrReadOnly,IsApproved)
+    permission_classes = (IsAuthorOrReadOnly,IsApprovedOrReadOnly)
 
     queryset = models.Review.objects.all()
     serializer_class = ReviewSerializer
@@ -27,7 +27,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 class CuisineViewSet(viewsets.ModelViewSet):
     #giving permission only to logged in users
 
-    permission_classes = (IsAuthor, IsApproved, IsAuthorOrReadOnly)
+    permission_classes = (IsApprovedOrReadOnly, IsAuthorOrReadOnly)
 
     queryset = models.Cuisine.objects.all()
     serializer_class = CuisineSerializer
@@ -35,7 +35,7 @@ class CuisineViewSet(viewsets.ModelViewSet):
 
 class SettingViewSet(viewsets.ModelViewSet):
     #giving permission only to logged in users
-    permission_classes = (IsAuthor, IsApproved, IsAuthorOrReadOnly)
+    permission_classes = (IsApprovedOrReadOnly, IsAuthorOrReadOnly)
 
     queryset = models.Setting.objects.all()
     serializer_class = SettingSerializer

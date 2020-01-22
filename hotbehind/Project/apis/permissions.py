@@ -14,11 +14,21 @@ class IsAuthorOrReadOnly(permissions.BasePermission):
 class IsApproved(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        if request.user.approved:
-            return True
+        if request.user.is_authenticated:    
+            if request.user.approved:
+                return True
         return False
 
 class IsAuthor(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         return obj.author == request.user
+
+class IsApprovedOrReadOnly(permissions.BasePermission):
+    
+    def has_permission(self,request,view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        if request.user.is_authenticated:    
+            return request.user.approved
+        return False
