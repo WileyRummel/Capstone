@@ -4,7 +4,7 @@
 {% if user.is_authenticated %} Hi {{ user.username }}!
 
 
-<div id="main">
+<!-- <div id="main">
   <button class="container" @click="getRestaurants($event)">
     Restaurants
     </button>
@@ -17,12 +17,12 @@
     <button class="container"  @click="getSettings($event)">
       Settings
     </button>
-  </div>
+  </div> -->
 
 {% else %}
 <p>You are not logged in</p>
 
-<div id="main">
+<!-- <div id="main">
 <button class="container" @click="getRestaurants($event)">
   Restaurants
   </button>
@@ -35,7 +35,7 @@
   <button class="container"  @click="getSettings($event)">
     Settings
   </button>
-</div>
+</div> -->
 {% endif %}
 
 <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -44,8 +44,8 @@
 {% endblock %}
 
 {% block script %}
-<script>
-  console.log("test");
+<!-- <script>
+  
   let test = new Vue({
     el: "#main",
     delimiters: ["[[", "]]"],
@@ -64,6 +64,7 @@
         }).then(res => console.log(res.data));
       },
       getReviews() {
+        console.log("test");
         axios({
           method: "get",
           url: "/api/reviews/"
@@ -82,14 +83,14 @@
         }).then(res => console.log(res.data));
       }
     },
-    mounted: function(){
+    // mounted: function(){
       
-        axios({
-          method: "get",
-          url: "/api/reviews/"
-        }).then(res => console.log(res.data));
-      }
-    }
-  );
-</script>
+    //     axios({
+    //       method: "get",
+    //       url: "/api/reviews/"
+    //     }).then(res => console.log(res.data));
+    //   }
+    // }
+    });
+</script> -->
 {% endblock %}

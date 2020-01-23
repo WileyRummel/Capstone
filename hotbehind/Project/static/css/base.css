@@ -18,12 +18,12 @@ p {
     background-color: tomato;
 }
 #topbar {
-    padding: 2%;
-    /* margin: auto; */
+    /* padding: 2%; */
+    margin: auto;
     background:thistle;
     display: grid;
     grid-template-columns: 2fr 1fr;
-    grid-template-rows:20vh 10vh;
+    grid-template-rows:10vh 9vh;
     grid-template-areas: 
     "webtitle mission"
     "searcharea menubar"
@@ -37,19 +37,83 @@ p {
 }
 #mission {
     grid-area: mission;
+    font-size: x-small;
 }
 #searcharea {
     grid-area:searcharea;
     display: inline-block;
+    justify-content: center ;
+    align-content: center;
     
 }
 #menubar {
     grid-area: menubar;
     display: flex;
     justify-content: flex-end;
-    
+    align-content: center;
+}
+#id {
+    color: teal;
     
 }
-/* #menubar > * {
-    /* justify-content: right; */
-} */
+#id:link {
+    text-decoration: none;
+    color: teal;
+}
+#id:hover {
+    cursor: pointer;
+    text-decoration: none;
+}
+button, select, input {
+    font-size: 8px;
+    width: 55px;
+    height: 25px;
+}
+
+#menubar, #searcharea {
+    display: flex;
+    justify-content: stretch;
+    padding-right: 13px; 
+    /*this works for smallest mobile */
+}
+#SignUp {
+    width: 63px;
+}
+
+
+
+
+
+
+
+
+
+
+@media screen and (min-width: 768px){
+    /* Desktop CSS */
+    #mission{
+        font-size: large;
+        padding-right: 60px;
+    }
+    #searcharea {
+        grid-area:searcharea;
+        display: inline-block;
+        align-content: center;
+        padding-left: 16px;
+    }
+    #menubar {
+        grid-area: menubar;
+        display: flex;
+        justify-content: flex-end;
+        align-content: center;
+        padding-right: 38px;
+    }
+
+    button, select, input {
+        font-size: 15px;
+        width: 70px;
+        height: 32px;
+    }
+
+
+}

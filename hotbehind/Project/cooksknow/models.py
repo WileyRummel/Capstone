@@ -15,7 +15,7 @@ class Setting(models.Model):
 
 class Cuisine(models.Model):
     
-    options = models.TextField(max_length=10)
+    options = models.TextField(max_length=20)
     
     def __str__(self):
         return self.options
@@ -26,7 +26,7 @@ class Restaurant(models.Model):
     name = models.CharField(max_length=100, null=False, unique=False)
     location = models.CharField(max_length=500,blank=True)
     website = models.URLField(null=True,blank=True)
-    hours = models.TextField(max_length=50, blank=True)
+    hours = models.TextField(max_length=200, blank=True)
     photo = models.ImageField(upload_to='images', default='default.jpg')
 
     #the relationship fields to other models.
