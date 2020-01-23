@@ -20,7 +20,7 @@ class Cuisine(models.Model):
     def __str__(self):
         return self.options
     
-fs = FileSystemStorage(location = '/media/photos')
+# fs = FileSystemStorage(location = '/media/photos')
 class Restaurant(models.Model):
     #the three specific fields for the Restaurant Model
     name = models.CharField(max_length=100, null=False, unique=False)
@@ -30,7 +30,6 @@ class Restaurant(models.Model):
     photo = models.ImageField(upload_to='images', default='default.jpg')
 
     #the relationship fields to other models.
-
     reviewers = models.ManyToManyField(CustomUser, related_name="Reviews", through="Review") #iterate through this to get the rating.  for x in reviewers x.rating
     cuisines = models.ManyToManyField(Cuisine, related_name="cuisines",blank=True)
     settings = models.ManyToManyField(Setting, related_name="settings",blank=True)
@@ -59,6 +58,8 @@ class Review(models.Model):
     # cuisines = models.ManyToManyField(Cuisine, related_name="ReviewCuisines", blank=True)
     # settings = models.ManyToManyField(Setting, related_name="ReviewSettings", blank=True)
     created = models.DateTimeField(auto_now_add=True)
+    # filter_backends = [filters.SearchFilter]
+    # search_fields = []
 
 
     def get_absolute_url(self):

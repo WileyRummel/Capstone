@@ -3,6 +3,7 @@
 from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework import authentication, permissions, authtoken
+from rest_framework import filters
 
 #local classes, models, etc.
 from users.models import CustomUser
@@ -19,6 +20,8 @@ class RestaurantViewSet(viewsets.ModelViewSet):
     #getting all the database objects from data models and serializers
     queryset = models.Restaurant.objects.all()
     serializer_class = RestaurantSerializer
+    filter_backends =[filters.SearchFilter]
+    search_fields = ['name','cuisines__options','settings__options','location']
 
 class ReviewViewSet(viewsets.ModelViewSet):
     #giving permission only to logged in users
@@ -27,11 +30,12 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
     queryset = models.Review.objects.all()
     serializer_class = ReviewSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['restaurant__name','rating','created','body']
 
 
 class CuisineViewSet(viewsets.ModelViewSet):
     #giving permission only to logged in users
-
     permission_classes = (IsApprovedOrReadOnly, IsAuthorOrReadOnly)
 
     queryset = models.Cuisine.objects.all()
@@ -50,7 +54,7 @@ class SettingViewSet(viewsets.ModelViewSet):
 - Request passed to the handler methods will be REST frameworks REQUEST instance, not Djangoe's HTTPREQUEST instances.  
 - Handler methods may return REST frameworks RESPONSE instead of Djangoes HTTPRESPONSE. The view will manage conent negotiation and setting the correst renderer on the response
 - Any APIException exceptions will be caught and mediated into appropriate responses. 
-- Incoming requests will be authenticated and appropriate permissions and/or throttle checks will be run before dispatching the request to the hangler method.  
+- Incoming requests will be authenticated and appropriate permissions and/or throttle checks will be run before dispatching the request to the handler method.  
 '''
 class UserApprovalSystem(APIView):
     '''This will be called after a user passes the quiz.  It will change CustumUser.approved from default=False to True. This gives them permission to make posts.'''

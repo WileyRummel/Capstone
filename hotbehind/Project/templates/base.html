@@ -3,119 +3,127 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-  <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css"/>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
-  <link rel="stylesheet" href="{% static 'css/base.css' %}"/>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://necolas.github.io/normalize.css/8.0.1/normalize.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
 
-  <title>{% block title %}Feed Feed{% endblock %}</title>
-</head>
-<body>
-  <div id="topbar">
-    <h1 id="webtitle"><a href="{% url 'home' %}" id="home">FEED.ME</a></h1>
-    <p id="mission">Food reviews from professionals for everyone</p>
-    {% if user.is_authenticated %}
-    <div id="menubar">
-      <a href ="{% url 'logout' %}"><button class="topmenu" id="login" >Logout</button></a>
-      <a>
-        <button  class="topmenu" id="profile">Profile</button>
-      </a>
-    </div>
+    <title>{% block title %}Feed Feed{% endblock %}</title>
+  </head>
+  <body>
+    <div id="topbar">
+      <h1 id="webtitle"><a href="{% url 'home' %}" id="home">FEED.ME</a></h1>
+      <p id="mission">Food reviews from professionals for everyone</p>
+      {% if user.is_authenticated %}
+      <div id="menubar">
+        <a href="{% url 'logout' %}"
+          ><button class="topmenu" id="login">Logout</button></a
+        >
+        <a>
+          <button class="topmenu" id="profile">Profile</button>
+        </a>
+      </div>
       {% else %}
-    <div id="menubar">
-      <a href ="{% url 'login' %}"><button class="topmenu" id="login" >Login</button></a>
-      <a href = "{% url 'signup' %}"><button class="topmenu" id="SignUp">Sign Up</button> </a>
-    </div>
+      <div id="menubar">
+        <a href="{% url 'login' %}"
+          ><button class="topmenu" id="login">Login</button></a
+        >
+        <a href="{% url 'signup' %}"
+          ><button class="topmenu" id="SignUp">Sign Up</button>
+        </a>
+      </div>
       {% endif %}
-      
-    <div id="searcharea">
-      <form id="searchform">
-      <input field="text" placeholder="Search..." id="searchfield" v-model.lazy="search"/>
-      <select  class="topmenu" id="drop" v-model="selectedFilter">
-        <option disable value="">Search By:</option>
-        <option @change="($event)">Restaurants</option>
-        <option @change="($event)">Cuisines</option>
-        <option @change="($event)">Settings</option>
-      </select>
-        <button class="topmenu" id="search" @click.prevent="getFilter($event)">Search</button>
-      </form>
+
+      <div id="searcharea">
+        <form id="searchform">
+          <input
+            field="text"
+            placeholder="Search..."
+            id="searchfield"
+            v-model.lazy="search"
+          />
+          <select class="topmenu" id="drop" v-model="selectedFilter">
+            <option disable value="">Search By:</option>
+            <option @change="($event)">Restaurants</option>
+            <option @change="($event)">Reviews</option>
+            <!-- <option @change="($event)">Cuisines</option>
+        <option @change="($event)">Settings</option> -->
+          </select>
+          <button
+            class="topmenu"
+            id="search"
+            @click.prevent="getFilter($event)"
+          >
+            Search
+          </button>
+        </form>
+      </div>
     </div>
-  </div>
 
-  <main>
-    {% block content %}
-    {% endblock %}
-  </main>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="https://unpkg.com/vue"></script>
-  <script>
-    let revues = new Vue({
-      el: "#topbar",
-      delimiters: ["[[", "]]"],
-      data: {
-        csrf_token: "", //authentication
-        restaurants: [],
-        cuisines: [],
-        settings: [],
-        search: "", //for input text in search menu
-        selectedFilter : "",
-      },
-      methods: {
-        getRestaurants() {
-          axios({
-            method: "get",
-            url: "/api/restaurants/"
-          }).then(res => console.log(res.data))
+    <main>
+      {% block content %} {% endblock %}
+    </main>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+      let revues = new Vue({
+        el: "#topbar",
+        delimiters: ["[[", "]]"],
+        data: {
+          csrf_token: "", //authentication
+          restaurants: [],
+          cuisines: [],
+          settings: [],
+          reviews: [],
+          search: "", //for input text in search menu
+          selectedFilter: ""
         },
-        getReviews() {
-          axios({
-            method: "get",
-            url: "/api/reviews/"
-          }).then(res => console.log(res.data));
-        },
-        getCuisines() {
-          axios({
-            method: "get",
-            url: "/api/cuisines/"
-          }).then(res => console.log(res.data));
-        },
-        getSettings() {
-          axios({
-            method: "get",
-            url: "/api/settings/"
-          }).then(res => console.log(res.data));
-        },
-        getFilter() {
-          console.log("Get Filter Test  " + this.selectedFilter);
-          if (this.selectedFilter == "Restaurants") {
-            console.log("This is working!")
-            axios({
-              method: "get",
-              url: "/api/restaurants/"
-             }).then(res => console.log(res.data))
+        methods: {
+          getFilter() {
+            console.log("Get Filter Test  " + this.selectedFilter);
+            if (this.selectedFilter == "Restaurants") {
+              console.log("This is working!");
+              axios({
+                method: "get",
+                url: `/api/restaurants/?search=${this.search}`
+              })
+                .then(res => console.log(res.data))
+                .then(console.log(this.search));
+            } else if (this.selectedFilter == "Cuisines") {
+              //uses the selectedFilter model to get the current value or the select option and get the corresponding api request
+              axios({
+                method: "get",
+                url: "/api/cuisines/"
+              }).then(res => console.log(res.data));
+            } else if (this.selectedFilter == "Settings") {
+              axios({
+                method: "get",
+                url: "/api/settings/"
+              })
+                .then(res => this.settings.push(res.data))
+                .then(console.log(this.search));
+            } else if (this.selectedFilter == "Reviews") {
+              console.log("REVIEWS SELECTED");
+              axios({
+                method: "get",
+                url: `/api/reviews/?search=${this.search}`
+              }).then(res => console.log(res.data));
             }
-          else if (this.selectedFilter == "Cuisines"){ //uses the selectedFilter model to get the current value or the select option and get the corresponding api request
-            axios({
-              method: "get",
-              url: "/api/cuisines/"
-            }).then(res => console.log(res.data))
           }
-          else if (this.selectedFilter == "Settings"){ console.log("hello")
-            axios({
-              method: "get",
-              url: "/api/settings/"
-            }).then(res => this.settings.push(res.data))
-            .then(console.log(this.search)
-            )}
-          } 
-
         }
-      },
-    );
+      });
     </script>
-  {% block script %}
-  {% endblock %}
-</body>
+    {% block script %} {% endblock %}
+  </body>
 </html>

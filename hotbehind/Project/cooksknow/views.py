@@ -1,6 +1,8 @@
-from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
+
+# from rest_framework import filters
+# from django_filters.rest_framework import DjangoFilterBackend
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
@@ -11,6 +13,8 @@ from .models import Restaurant, Cuisine, Setting, Review
 class RestaurantListView(ListView):
     model = Restaurant
     template_name = 'restaurants.html'
+    
+
 
 class RestaurantDetailView(DetailView):
     model = Restaurant
@@ -28,8 +32,7 @@ class RestaurantCreateView(LoginRequiredMixin, CreateView):
 class ReviewCreateView(LoginRequiredMixin, CreateView):
     model = Review
     template_name = 'review_new.html'
-    fields = ['author','restaurant','body','rating','cuisines','settings' ]
-
+    fields = ['author','restaurant','body','rating','cuisines','settings']
     def form_valid(self,form):
         return super().form_valid(form)
     
@@ -40,6 +43,8 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
 class ReviewDetailView(DetailView):
     model: Review
     template_name = 'review_detail.html'
+    # filter_backends = [filters.SearchFilter]
+    # search_fields = ['restaurant','rating','created']
 
     def get_queryset(self):
         return Review.objects.order_by('-created')

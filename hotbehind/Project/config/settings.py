@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     #third party apps
     'rest_framework', #API
     'rest_framework.authtoken', # Authentication Tokens
+    # 'django-filters', #backend search filtering
     # 'rest_auth'
 
 ]
@@ -145,7 +146,10 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-    ], # Setting up JWS Token Authentication system
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ]
 }
 
 MEDIA_URL = '/media/'
