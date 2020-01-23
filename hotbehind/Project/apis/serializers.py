@@ -43,9 +43,9 @@ class RestaurantSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     #these info subSerializers are to get a string representation of the respective models(source) instead of the PK.  ex: cuisines = American, not cuisines = 1
 
-    setting_info = SettingSerializer(many=True, read_only=True,source='settings')
-    cuisine_info = CuisineSerializer(many=True, read_only=True,source='cuisines')
-
+    # setting_info = SettingSerializer(many=True, read_only=True,source='settings')
+    # cuisine_info = CuisineSerializer(many=True, read_only=True,source='cuisines')
+    restaurant_info = RestaurantSerializer(many=False, read_only=True, source='restaurants')
     class Meta:
         fields = (
             'id',
@@ -53,10 +53,9 @@ class ReviewSerializer(serializers.ModelSerializer):
             'restaurant',
             'body',
             'rating',
-            'cuisines',
-            'settings',
             'created',
-            'setting_info',
-            'cuisine_info'
+            'restaurant_info',
+            # 'setting_info',
+            # 'cuisine_info'
         )
         model = models.Review

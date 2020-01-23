@@ -1,10 +1,55 @@
 body {
-    background: #91A3FE;
-    color: hotpink;
+    background: rgb(168, 182, 250);
+    color: rgb(0, 0, 0);
 }
 p {
     color: indianred;
 }
-h1 {
-    text-shadow: 2px 2px rgb(245, 42, 143);
+
+.topmenu {
+    border-radius: 5%;
+    color: white;
+    background: rgb(163, 0, 0);
+    border: 2px solid white;
+    font-size: small;
+    margin: auto;
 }
+.topmenu:hover {
+    background-color: tomato;
+}
+#topbar {
+    padding: 2%;
+    /* margin: auto; */
+    background:thistle;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows:20vh 10vh;
+    grid-template-areas: 
+    "webtitle mission"
+    "searcharea menubar"
+    ;
+}
+#webtitle {
+    grid-area: webtitle;
+    font-size: 2em;
+    font-weight: 700;
+    text-align: center;
+}
+#mission {
+    grid-area: mission;
+}
+#searcharea {
+    grid-area:searcharea;
+    display: inline-block;
+    
+}
+#menubar {
+    grid-area: menubar;
+    display: flex;
+    justify-content: flex-end;
+    
+    
+}
+/* #menubar > * {
+    /* justify-content: right; */
+} */

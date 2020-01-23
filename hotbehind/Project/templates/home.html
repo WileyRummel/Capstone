@@ -1,15 +1,95 @@
 <!-- templates/home.html -->
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block title %}Home{% endblock %} 
+{% block content%} 
+{% if user.is_authenticated %} Hi {{ user.username }}!
 
-{% block title %}Home{% endblock %}
 
-{% block content %}
-{% if user.is_authenticated %}
-  Hi {{ user.username }}!
-  <p><a href="{% url 'logout' %}">logout</a></p>
+<div id="main">
+  <button class="container" @click="getRestaurants($event)">
+    Restaurants
+    </button>
+    <button class="container" @click="getReviews($event)">
+      Reviews
+    </button>
+    <button class="container" @click="getCuisines($event)">
+      Cuisines
+    </button>
+    <button class="container"  @click="getSettings($event)">
+      Settings
+    </button>
+  </div>
+
 {% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">login</a> |
-  <a href="{% url 'signup' %}">signup</a>
+<p>You are not logged in</p>
+
+<div id="main">
+<button class="container" @click="getRestaurants($event)">
+  Restaurants
+  </button>
+  <button class="container" @click="getReviews($event)">
+    Reviews
+  </button>
+  <button class="container" @click="getCuisines($event)">
+    Cuisines
+  </button>
+  <button class="container"  @click="getSettings($event)">
+    Settings
+  </button>
+</div>
 {% endif %}
+
+<!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/vue"></script> -->
+
+{% endblock %}
+
+{% block script %}
+<script>
+  console.log("test");
+  let test = new Vue({
+    el: "#main",
+    delimiters: ["[[", "]]"],
+    data: {
+      csrf_token: "",
+      restaurants: [],
+      reviews: [],
+      cuisines: [],
+      settings: []
+    },
+    methods: {
+      getRestaurants() {
+        axios({
+          method: "get",
+          url: "/api/restaurants/"
+        }).then(res => console.log(res.data));
+      },
+      getReviews() {
+        axios({
+          method: "get",
+          url: "/api/reviews/"
+        }).then(res => console.log(res.data));
+      },
+      getCuisines() {
+        axios({
+          method: "get",
+          url: "/api/cuisines/"
+        }).then(res => console.log(res.data));
+      },
+      getSettings() {
+        axios({
+          method: "get",
+          url: "/api/settings/"
+        }).then(res => console.log(res.data));
+      }
+    },
+    mounted: function(){
+      
+        axios({
+          method: "get",
+          url: "/api/reviews/"
+        }).then(res => console.log(res.data));
+      }
+    }
+  );
+</script>
 {% endblock %}

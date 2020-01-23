@@ -13,10 +13,82 @@
   <title>{% block title %}Feed Feed{% endblock %}</title>
 </head>
 <body>
-  <h1>Feed Feed</h1>
+  <div id="topbar">
+    <h1 id="webtitle">FEED.ME</h1>
+    <p id="mission">Reviews from the experts in food</p>
+    {% if user.is_authenticated %}
+    <div id="menubar">
+      <a href ="{% url 'logout' %}"><button class="topmenu" id="login" >Logout</button></a>
+      <button  class="topmenu" id="profile">Profile</button>
+    </div>
+      {% else %}
+    <div id="menubar">
+      <a href ="{% url 'login' %}"><button class="topmenu" id="login" >Login</button></a>
+      <a href = "{% url 'signup' %}"><button class="topmenu" id="SignUp">Sign Up</button> </a>
+    </div>
+      {% endif %}
+      
+    <div id="searcharea">
+      <form id="searchform">
+      <input field="text" placeholder="Search..." id="searchfield"/>
+      <select  class="topmenu" id="drop">
+        <option>Search By:</option>
+        <option @click="getRestaurants">Restaurants</option>
+        <option @click="getCuisines">Cuisines</option>
+        <option @click="getSettings">Settings</option>
+        <option @click="getReviews">Rating</option>
+        </select>
+        <button class="topmenu" id="search">Submit Search</button>
+      </form>
+    </div>
+  </div>
+
   <main>
     {% block content %}
     {% endblock %}
   </main>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/vue"></script>
+  <script>
+    console.log("test");
+    let revues = new Vue({
+      el: "#topbar",
+      delimiters: ["[[", "]]"],
+      data: {
+        csrf_token: "",
+        restaurants: [],
+        reviews: [],
+        cuisines: [],
+        settings: []
+      },
+      methods: {
+        getRestaurants() {
+          axios({
+            method: "get",
+            url: "/api/restaurants/"
+          }).then(res => console.log(res.data));
+        },
+        getReviews() {
+          axios({
+            method: "get",
+            url: "/api/reviews/"
+          }).then(res => console.log(res.data));
+        },
+        getCuisines() {
+          axios({
+            method: "get",
+            url: "/api/cuisines/"
+          }).then(res => console.log(res.data));
+        },
+        getSettings() {
+          axios({
+            method: "get",
+            url: "/api/settings/"
+          }).then(res => console.log(res.data));
+        }
+      }});
+    </script>
+  {% block script %}
+  {% endblock %}
 </body>
 </html>

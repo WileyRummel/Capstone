@@ -5,4 +5,9 @@ from django.forms import ModelForm
 class RestaurantForm(ModelForm):
     class Meta:
         model = Restaurant
-        fields = ['name','location','website','cuisines','settings','reviewers']
+        fields = ['name','photo','location','website','cuisines','settings','reviewers']
+
+class ReviewForm(ModelForm):
+    class Meta:
+        model = Review
+        fields = ['restaurant','rating','body']

@@ -32,3 +32,4 @@ class IsApprovedOrReadOnly(permissions.BasePermission):
         if request.user.is_authenticated:    
             return request.user.approved
         return False
+
