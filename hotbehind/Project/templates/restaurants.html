@@ -2,6 +2,58 @@
 <h1> hello </h1>
 {% block content %}
 
-    <p> test</p>
+    
 
 {% endblock content %}    
+{% block script %}
+
+
+<!-- <script>
+
+    let vm = new Vue({
+      el: "#topbar",
+      delimiters: ["[[", "]]"],
+      data: {
+        csrf_token: "", //authentication
+        restaurants: [],
+        cuisines: [],
+        settings: [],
+        reviews: [],
+        search: "", //for input text in search menu
+        selectedFilter: ""
+      },
+      methods: {
+        getFilter() {
+          console.log("Get Filter Test  " + this.selectedFilter);
+          if (this.selectedFilter == "Restaurants") {
+            console.log("This is working!");
+            axios({
+              method: "get",
+              url: `/api/restaurants/?search=${this.search}`
+            })
+              .then(res => console.log(res.data))
+          } else if (this.selectedFilter == "Cuisines") {
+            //uses the selectedFilter model to get the current value or the select option and get the corresponding api request
+            axios({
+              method: "get",
+              url: "/api/cuisines/"
+            }).then(res => console.log(res.data));
+          } else if (this.selectedFilter == "Settings") {
+            axios({
+              method: "get",
+              url: "/api/settings/"
+            })
+              .then(res => this.settings.push(res.data))
+              .then(console.log(this.search));
+          } else if (this.selectedFilter == "Reviews") {
+            axios({
+              method: "get",
+              url: `/api/reviews/?search=${this.search}`
+            }).then(res => console.log(res.data));
+          }
+        }
+      }
+    });
+    </script> -->
+
+{% endblock %}

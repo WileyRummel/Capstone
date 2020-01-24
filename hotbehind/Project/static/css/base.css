@@ -1,9 +1,12 @@
 body {
     background: rgb(168, 182, 250);
     color: rgb(0, 0, 0);
+    justify-items: center;
+    margin: auto;
 }
 p {
     color: indianred;
+    padding: none;
 }
 
 .topmenu {
@@ -18,16 +21,18 @@ p {
     background-color: tomato;
 }
 #topbar {
-    /* padding: 2%; */
-    margin: auto;
+    position: fixed;
     background:thistle;
     display: grid;
     grid-template-columns: 2fr 1fr;
-    grid-template-rows:10vh 9vh;
+    grid-template-rows:9vh 7vh;
     grid-template-areas: 
     "webtitle mission"
     "searcharea menubar"
     ;
+}
+#resultscontainer {
+    padding-top: 16vh;
 }
 #webtitle {
     grid-area: webtitle;
@@ -80,9 +85,51 @@ button, select, input {
     width: 63px;
 }
 
-
-
-
+.restaurantcontainer {
+    margin: 3px;
+    background: rgb(35, 184, 230);
+    padding: 3px;
+    padding-left: 3px;;
+    border: 2px solid black;
+    font-size: smaller;
+    width: 90%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: 
+    "photo photo"
+    "name name"
+    "cuisine cuisine"
+    "setting setting"
+    "location location"
+    "hours hours"
+    "website website";
+}
+.photo {
+    height: 130px;
+    width: auto;
+    grid-area: photo;
+    justify-self: center;
+}
+.restname {
+    grid-area: name;
+}
+.hours {
+    grid-area: hours;
+}
+.location {
+    grid-area: location;
+}
+.settings {
+    grid-area: setting;
+}
+.cuisines {
+    grid-area: cuisine;
+}
+.website {
+    grid-area: website;
+    justify-self: center;
+}
 
 
 

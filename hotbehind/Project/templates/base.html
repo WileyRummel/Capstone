@@ -22,55 +22,8 @@
     <title>{% block title %}Feed Feed{% endblock %}</title>
   </head>
   <body>
-    <div id="topbar">
-      <h1 id="webtitle"><a href="{% url 'home' %}" id="home">FEED.ME</a></h1>
-      <p id="mission">Food reviews from professionals for everyone</p>
-      {% if user.is_authenticated %}
-      <div id="menubar">
-        <a href="{% url 'logout' %}"
-          ><button class="topmenu" id="login">Logout</button></a
-        >
-        <a>
-          <button class="topmenu" id="profile">Profile</button>
-        </a>
-      </div>
-      {% else %}
-      <div id="menubar">
-        <a href="{% url 'login' %}"
-          ><button class="topmenu" id="login">Login</button></a
-        >
-        <a href="{% url 'signup' %}"
-          ><button class="topmenu" id="SignUp">Sign Up</button>
-        </a>
-      </div>
-      {% endif %}
-      <search-bar></search-bar>
-      <!-- <div id="searcharea">
-        <form id="searchform">
-          <input
-            field="text"
-            placeholder="Search..."
-            id="searchfield"
-            v-model.lazy="search"
-          />
-          <select class="topmenu" id="drop" v-model="selectedFilter">
-            <option disable value="">Search By:</option>
-            <option @change="($event)">Restaurants</option>
-            <option @change="($event)">Reviews</option>
-            <option @change="($event)">Cuisines</option>
-        <option @change="($event)">Settings</option> -->
-          <!-- </select>
-          <button
-            class="topmenu"
-            id="search"
-            @click.prevent="getFilter($event)"
-          >
-            Search
-          </button>
-        </form>
-      </div> -->
-    </div> 
-
+    <!--Make a main to hold everything or use multiple vue apps-->
+    
     <main>
       {% block content %} {% endblock %}
     </main>
@@ -78,15 +31,16 @@
     <script src="https://unpkg.com/vue"></script>
     <script>
       Vue.component('search-bar',{
+        delimiters: ["[[", "]]"],
+
         data: function(){
           return {
             selectedFilter:"",
-            search:""
+            search:"",
+            results: [],
           }
         },
-        // props: [
-        //   "selectedFilter",
-        //   "search",],
+        props: [],
         template: 
         ` <div id="searcharea">
         <form id="searchform">
@@ -114,81 +68,88 @@
       </div>`,
       methods: {
           getFilter() {
-            console.log("Get Filter Test  " + this.selectedFilter);
             if (this.selectedFilter == "Restaurants") {
               console.log("This is working!");
               axios({
                 method: "get",
                 url: `/api/restaurants/?search=${this.search}`
               })
-                .then(res => console.log(res.data))
-            } else if (this.selectedFilter == "Cuisines") {
-              //uses the selectedFilter model to get the current value or the select option and get the corresponding api request
-              axios({
-                method: "get",
-                url: "/api/cuisines/"
-              }).then(res => console.log(res.data));
-            } else if (this.selectedFilter == "Settings") {
-              axios({
-                method: "get",
-                url: "/api/settings/"
-              })
-                .then(res => this.settings.push(res.data))
-                .then(console.log(this.search));
+                .then(res => this.$emit("givesearch",res.data))
             } else if (this.selectedFilter == "Reviews") {
               axios({
                 method: "get",
                 url: `/api/reviews/?search=${this.search}`
-              }).then(res => console.log(res.data));
+              }).then(res => this.results.push(res.data));
             }
           }
         }
       });
 
-      let vm = new Vue({
-        el: "#topbar",
+      Vue.component("restaurant-detail", { 
         delimiters: ["[[", "]]"],
-        data: {
-          csrf_token: "", //authentication
-          restaurants: [],
-          cuisines: [],
-          settings: [],
-          reviews: [],
-          search: "", //for input text in search menu
-          selectedFilter: ""
+
+        data: function() {
+          return {
+            // name: "",
+            // cuisines: "",
+            // settings: "",
+            // hours: "",
+            // location: "",
+            // website: "",
+            // photo: "",
+            // rating: "",
+          }
         },
-        methods: {
-          getFilter() {
-            console.log("Get Filter Test  " + this.selectedFilter);
-            if (this.selectedFilter == "Restaurants") {
-              console.log("This is working!");
-              axios({
-                method: "get",
-                url: `/api/restaurants/?search=${this.search}`
-              })
-                .then(res => console.log(res.data))
-            } else if (this.selectedFilter == "Cuisines") {
-              //uses the selectedFilter model to get the current value or the select option and get the corresponding api request
-              axios({
-                method: "get",
-                url: "/api/cuisines/"
-              }).then(res => console.log(res.data));
-            } else if (this.selectedFilter == "Settings") {
-              axios({
-                method: "get",
-                url: "/api/settings/"
-              })
-                .then(res => this.settings.push(res.data))
-                .then(console.log(this.search));
-            } else if (this.selectedFilter == "Reviews") {
-              axios({
-                method: "get",
-                url: `/api/reviews/?search=${this.search}`
-              }).then(res => console.log(res.data));
+        props: [
+          "rest-obj"
+        ],
+
+        template: 
+          `
+          <div class="restaurantcontainer">
+            <img class="restaurantdetails photo" :src='restObj.photo'/>
+            <h3 class="restaurantdetails restname"> [[restObj.name]] </h3>
+            <p class="restaurantdetails hours"> [[restObj.hours]] </p>
+            <p class="restaurantdetails location"> [[restObj.location]] </p>
+            <p class="restaurantdetails website"><a :href='restObj.website'> site link</a></p>
+            <p class="restaurauntdetails settings" :restObj="settingstring" v-if="restObj.setting_info">Great for: [[restObj.setting_info]] </p>
+            <p class="restaurantdetails cuisines" :restObj="cuisinestring">Cuisines: [[restObj.cuisine_info]] </p>
+          </div>
+
+          `,
+          computed: { //these computed properties are used during restaurant detail rendering.  They manipulate the array of objects for settings and cuisines and return a human readable string for better presentation and legibility.
+            settingstring: function(x) {
+              console.log(x.restObj.setting_info)
+              let stringed = ""; //initializing a dummy string to use in data manipulation
+              x.restObj.setting_info.forEach(element => { 
+                stringed += element.options + ", " //adding the value of each option to the string
+                });
+                let strlen = stringed.length;
+                console.log(strlen);
+                stringed = stringed.slice(0,strlen-2); //removing the last two characters based on the length of the string
+              
+                console.log(stringed)
+              x.restObj.setting_info = stringed //returing the proper variable, but redifined as the string version of the list
+              },
+            cuisinestring: function(x) {
+              console.log(x.restObj.cuisine_info)
+              let stringed = "";
+              x.restObj.cuisine_info.forEach(element => { 
+                stringed += element.options + ", "
+                });
+                let strlen = stringed.length;
+                console.log(strlen);
+                stringed = stringed.slice(0,strlen-2);
+              
+                console.log(stringed)
+              x.restObj.cuisine_info = stringed
+              }
             }
           }
-        }
-      });
+
+      )
+
+      
     </script>
     {% block script %} {% endblock %}
   </body>

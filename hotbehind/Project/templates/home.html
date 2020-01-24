@@ -1,96 +1,87 @@
 <!-- templates/home.html -->
 {% extends 'base.html' %} {% block title %}Home{% endblock %} 
 {% block content%} 
-{% if user.is_authenticated %} Hi {{ user.username }}!
-
-
-<!-- <div id="main">
-  <button class="container" @click="getRestaurants($event)">
-    Restaurants
-    </button>
-    <button class="container" @click="getReviews($event)">
-      Reviews
-    </button>
-    <button class="container" @click="getCuisines($event)">
-      Cuisines
-    </button>
-    <button class="container"  @click="getSettings($event)">
-      Settings
-    </button>
-  </div> -->
-
+{% if user.is_authenticated %}
 {% else %}
-<p>You are not logged in</p>
-
-<!-- <div id="main">
-<button class="container" @click="getRestaurants($event)">
-  Restaurants
-  </button>
-  <button class="container" @click="getReviews($event)">
-    Reviews
-  </button>
-  <button class="container" @click="getCuisines($event)">
-    Cuisines
-  </button>
-  <button class="container"  @click="getSettings($event)">
-    Settings
-  </button>
-</div> -->
 {% endif %}
+<div id="main">
+  <div id="topbar">
+    <h1 id="webtitle"><a href="{% url 'home' %}" id="home">FEED.ME</a></h1>
+    <p id="mission">Food reviews from professionals for everyone</p>
+    {% if user.is_authenticated %}
+    <div id="menubar">
+      <a href="{% url 'logout' %}">
+        <button class="topmenu" id="login">Logout</button>
+      </a>
+      <a>
+        <button class="topmenu" id="profile">Profile</button>
+      </a>
+    </div>
+    {% else %}
+    <div id="menubar">
+      <a href="{% url 'login' %}"
+        ><button class="topmenu" id="login">Login</button></a
+      >
+      <a href="{% url 'signup' %}"
+        ><button class="topmenu" id="SignUp">Sign Up</button>
+      </a>
+    </div>
+    {% endif %}
+    <search-bar v-on:givesearch="getFilter"></search-bar>
+  
+  </div>
+  <div id="resultscontainer">
+    <restaurant-detail v-for="x in results" :rest-obj="x"></restaurant-detail>
+  </div>
+</div>
 
-<!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://unpkg.com/vue"></script> -->
+
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/vue"></script>
 
 {% endblock %}
 
 {% block script %}
-<!-- <script>
+
+
+
+<script>
+
+let vm = new Vue({
+  el: "#main",
+  delimiters: ["[[", "]]"],
+  data: {
+    csrf_token: "", //authentication
+    restaurants: {
+      name: "",
+      photo: "",
+      hours: "",
+      location: "",
+      website: "",
+      rating: "",
+      cuisines: "",
+      settings: "",
+    },
+    reviews: {
+      author: "",
+      rating: "",
+      body: "",
+      restaurant: "",
+      created: "",
+    },
+    search: "", //for input text in search menu
+    selectedFilter: "",
+    results: [],
+  },
+  methods: {
+    getFilter(e) {
+      console.log("Get Filter Test  " + e); this.results = e;console.log(this.results);
+
+    }
+  },
   
-  let test = new Vue({
-    el: "#main",
-    delimiters: ["[[", "]]"],
-    data: {
-      csrf_token: "",
-      restaurants: [],
-      reviews: [],
-      cuisines: [],
-      settings: []
-    },
-    methods: {
-      getRestaurants() {
-        axios({
-          method: "get",
-          url: "/api/restaurants/"
-        }).then(res => console.log(res.data));
-      },
-      getReviews() {
-        console.log("test");
-        axios({
-          method: "get",
-          url: "/api/reviews/"
-        }).then(res => console.log(res.data));
-      },
-      getCuisines() {
-        axios({
-          method: "get",
-          url: "/api/cuisines/"
-        }).then(res => console.log(res.data));
-      },
-      getSettings() {
-        axios({
-          method: "get",
-          url: "/api/settings/"
-        }).then(res => console.log(res.data));
-      }
-    },
-    // mounted: function(){
-      
-    //     axios({
-    //       method: "get",
-    //       url: "/api/reviews/"
-    //     }).then(res => console.log(res.data));
-    //   }
-    // }
-    });
-</script> -->
+});
+</script>
+
 {% endblock %}

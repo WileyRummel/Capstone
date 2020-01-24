@@ -27,7 +27,7 @@ class Restaurant(models.Model):
     location = models.CharField(max_length=500,blank=True)
     website = models.URLField(null=True,blank=True)
     hours = models.TextField(max_length=200, blank=True)
-    photo = models.ImageField(upload_to='images', default='default.jpg')
+    photo = models.ImageField(upload_to='images/', default='default.jpg')
 
     #the relationship fields to other models.
     reviewers = models.ManyToManyField(CustomUser, related_name="Reviews", through="Review") #iterate through this to get the rating.  for x in reviewers x.rating

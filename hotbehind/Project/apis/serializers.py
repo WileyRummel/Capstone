@@ -36,6 +36,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
             'reviewers',
             'setting_info',
             'cuisine_info',
+            'photo',
         )
         model = models.Restaurant
 
