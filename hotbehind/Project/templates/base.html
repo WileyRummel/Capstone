@@ -44,8 +44,51 @@
         </a>
       </div>
       {% endif %}
+      <search-bar></search-bar>
+      <!-- <div id="searcharea">
+        <form id="searchform">
+          <input
+            field="text"
+            placeholder="Search..."
+            id="searchfield"
+            v-model.lazy="search"
+          />
+          <select class="topmenu" id="drop" v-model="selectedFilter">
+            <option disable value="">Search By:</option>
+            <option @change="($event)">Restaurants</option>
+            <option @change="($event)">Reviews</option>
+            <option @change="($event)">Cuisines</option>
+        <option @change="($event)">Settings</option> -->
+          <!-- </select>
+          <button
+            class="topmenu"
+            id="search"
+            @click.prevent="getFilter($event)"
+          >
+            Search
+          </button>
+        </form>
+      </div> -->
+    </div> 
 
-      <div id="searcharea">
+    <main>
+      {% block content %} {% endblock %}
+    </main>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+      Vue.component('search-bar',{
+        data: function(){
+          return {
+            selectedFilter:"",
+            search:""
+          }
+        },
+        // props: [
+        //   "selectedFilter",
+        //   "search",],
+        template: 
+        ` <div id="searcharea">
         <form id="searchform">
           <input
             field="text"
@@ -68,16 +111,41 @@
             Search
           </button>
         </form>
-      </div>
-    </div>
+      </div>`,
+      methods: {
+          getFilter() {
+            console.log("Get Filter Test  " + this.selectedFilter);
+            if (this.selectedFilter == "Restaurants") {
+              console.log("This is working!");
+              axios({
+                method: "get",
+                url: `/api/restaurants/?search=${this.search}`
+              })
+                .then(res => console.log(res.data))
+            } else if (this.selectedFilter == "Cuisines") {
+              //uses the selectedFilter model to get the current value or the select option and get the corresponding api request
+              axios({
+                method: "get",
+                url: "/api/cuisines/"
+              }).then(res => console.log(res.data));
+            } else if (this.selectedFilter == "Settings") {
+              axios({
+                method: "get",
+                url: "/api/settings/"
+              })
+                .then(res => this.settings.push(res.data))
+                .then(console.log(this.search));
+            } else if (this.selectedFilter == "Reviews") {
+              axios({
+                method: "get",
+                url: `/api/reviews/?search=${this.search}`
+              }).then(res => console.log(res.data));
+            }
+          }
+        }
+      });
 
-    <main>
-      {% block content %} {% endblock %}
-    </main>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://unpkg.com/vue"></script>
-    <script>
-      let revues = new Vue({
+      let vm = new Vue({
         el: "#topbar",
         delimiters: ["[[", "]]"],
         data: {
@@ -99,7 +167,6 @@
                 url: `/api/restaurants/?search=${this.search}`
               })
                 .then(res => console.log(res.data))
-                .then(console.log(this.search));
             } else if (this.selectedFilter == "Cuisines") {
               //uses the selectedFilter model to get the current value or the select option and get the corresponding api request
               axios({
@@ -114,7 +181,6 @@
                 .then(res => this.settings.push(res.data))
                 .then(console.log(this.search));
             } else if (this.selectedFilter == "Reviews") {
-              console.log("REVIEWS SELECTED");
               axios({
                 method: "get",
                 url: `/api/reviews/?search=${this.search}`
