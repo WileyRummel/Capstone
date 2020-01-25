@@ -55,12 +55,10 @@ class Review(models.Model):
     rating = models.IntegerField(choices=RATING_CHOICES, blank=False, null=True)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-    # cuisines = models.ManyToManyField(Cuisine, related_name="ReviewCuisines", blank=True)
-    # settings = models.ManyToManyField(Setting, related_name="ReviewSettings", blank=True)
     created = models.DateTimeField(auto_now_add=True)
-    # filter_backends = [filters.SearchFilter]
-    # search_fields = []
 
+    def __repr__(self):
+        return self.author
 
     def get_absolute_url(self):
         return reverse('cooksknow:reviewdetail', args=(self.id,))

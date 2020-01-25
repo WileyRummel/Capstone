@@ -9,7 +9,7 @@ from rest_framework import filters
 from users.models import CustomUser
 from cooksknow import models
 from .permissions import IsAuthorOrReadOnly, IsApproved, IsAuthor, IsApprovedOrReadOnly
-from .serializers import RestaurantSerializer, ReviewSerializer, CuisineSerializer, SettingSerializer
+from .serializers import RestaurantSerializer, ReviewSerializer, CuisineSerializer, SettingSerializer, UsersSerializer
 
 #Using view sets for easy and verbose representation of Models through the API.  Allows basic CRUD and
 
@@ -48,6 +48,10 @@ class SettingViewSet(viewsets.ModelViewSet):
 
     queryset = models.Setting.objects.all()
     serializer_class = SettingSerializer
+
+class UsersViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = UsersSerializer
 
 
 '''Setting up an API VIEW:

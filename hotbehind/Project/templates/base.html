@@ -27,6 +27,7 @@
     <main>
       {% block content %} {% endblock %}
     </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/vue"></script>
     <script>
@@ -43,7 +44,7 @@
         props: [],
         template: 
         ` <div id="searcharea">
-        <form id="searchform">
+        <form id="searchform" class="form-horizontal">
           <input
             field="text"
             placeholder="Search..."
@@ -79,7 +80,7 @@
               axios({
                 method: "get",
                 url: `/api/reviews/?search=${this.search}`
-              }).then(res => this.results.push(res.data));
+              }).then(res => this.$emit("givesearch",res.data));
             }
           }
         }
@@ -89,16 +90,7 @@
         delimiters: ["[[", "]]"],
 
         data: function() {
-          return {
-            // name: "",
-            // cuisines: "",
-            // settings: "",
-            // hours: "",
-            // location: "",
-            // website: "",
-            // photo: "",
-            // rating: "",
-          }
+          return {    }
         },
         props: [
           "rest-obj"
@@ -119,7 +111,6 @@
           `,
           computed: { //these computed properties are used during restaurant detail rendering.  They manipulate the array of objects for settings and cuisines and return a human readable string for better presentation and legibility.
             settingstring: function(x) {
-              console.log(x.restObj.setting_info)
               let stringed = ""; //initializing a dummy string to use in data manipulation
               x.restObj.setting_info.forEach(element => { 
                 stringed += element.options + ", " //adding the value of each option to the string
@@ -132,7 +123,6 @@
               x.restObj.setting_info = stringed //returing the proper variable, but redifined as the string version of the list
               },
             cuisinestring: function(x) {
-              console.log(x.restObj.cuisine_info)
               let stringed = "";
               x.restObj.cuisine_info.forEach(element => { 
                 stringed += element.options + ", "
@@ -146,11 +136,27 @@
               }
             }
           }
-
       )
+      Vue.component("review-detail", {
+        delimiters:["[[","]]"],
+        props: [ "rev-obj"],//this will be revObj in the template
+        template: 
+        `
+        <div class="reviewcontainer">
+          <h3 class="reviewdetail"> [[revObj.restaurant_info.name]] </h3>
+          <p class="reviewdetail"> [[revObj.author_info.username]] <b> [[revObj.author_info.role]]</b></p>
+          <p class="reviewdetail"> [[moment(revObj.created).format(YYYY)]] </p>
+          <p class="reviewdetail"> [[revObj.rating]] </p>
+          <p class="reviewdetail"> [[revObj.body]] </p>
+        </div>
+        `,
+        
+      })
 
       
     </script>
     {% block script %} {% endblock %}
   </body>
 </html>
+
+

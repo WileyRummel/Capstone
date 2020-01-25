@@ -32,11 +32,12 @@
   </div>
   <div id="resultscontainer">
     <restaurant-detail v-for="x in results" :rest-obj="x"></restaurant-detail>
+    <review-detail v-for="x in results" :rev-obj="x"></review-detail>
   </div>
 </div>
 
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/vue"></script>
 
@@ -80,8 +81,9 @@ let vm = new Vue({
 
     }
   },
-  
 });
+
+
 </script>
 
 {% endblock %}

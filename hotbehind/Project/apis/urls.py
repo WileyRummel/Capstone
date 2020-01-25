@@ -1,13 +1,14 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from.views import ReviewViewSet, RestaurantViewSet, CuisineViewSet, SettingViewSet
+from.views import ReviewViewSet, RestaurantViewSet, CuisineViewSet, SettingViewSet, UsersViewSet
 
 router = DefaultRouter()
 router.register('cuisines',CuisineViewSet, basename='cuisines')
 router.register('settings',SettingViewSet, basename='settings')
 router.register('restaurants',RestaurantViewSet, basename='restaurants')
 router.register('reviews',ReviewViewSet, basename='reviews')
+router.register('users', UsersViewSet, basename='users')
 
 urlpatterns = router.urls
 # path('cuisines',ListCuisine.as_view()),
