@@ -21,6 +21,7 @@ p {
     background-color: tomato;
 }
 #topbar {
+    width: 100vw;
     position: fixed;
     background:thistle;
     display: grid;
@@ -32,7 +33,8 @@ p {
     ;
 }
 #resultscontainer {
-    padding-top: 16vh;
+    padding-top: 17vh;
+
 }
 #webtitle {
     grid-area: webtitle;
@@ -149,7 +151,44 @@ button, select, input {
 }
 #resultscontainer {
     justify-content: center;
+    padding-top: 17vh;
 }
+.reviewcontainer {
+    margin: auto;
+    width: 90%;
+    justify-self: center;
+    justify-items: center;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 1fr 1fr 1fr 3fr;
+    grid-template-areas: 
+    "restaurantname restaurantname"
+    "userinfo revdate"
+    "rating rating"
+    "body body";
+    border: 2px solid black;
+    background: rgb(35, 184, 230);
+}
+.restaurantname {
+    grid-area: restaurantname;
+}
+.userinfo {
+    grid-area: userinfo;
+}
+.revdate {
+    grid-area: revdate;
+}
+.revrating {
+    grid-area: rating;
+}
+.revbody {
+    grid-area: body;
+    width: 85%;
+    background: rgb(221, 221, 221);
+    color: black;
+    
+}
+
 
 
 @media screen and (min-width: 768px){

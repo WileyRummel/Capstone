@@ -22,3 +22,23 @@ class CustomUser(AbstractUser):
 
     def __repr__(self):
         return self.username
+
+
+#maybe the models for a quiz to be built and django and deployed with django class based forms
+# class Quiz(models.Model):
+#     name = models.CharField(max_length=1000)
+
+# class Question(models.Model):
+#     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+#     label = models.CharField(max_length=1000)
+#     # answer = models.ManyToManyField(Answer)
+#     def __str__(self):
+#         return self.label
+
+# class Answer(models.Model):
+#     question = models.ManyToManyField(Question, on_delete=models.CASCADE)
+#     text = models.CharField(max_length=1000)
+#     is_correct = models.BooleanField(default=False)
+
+#     def __str__(self):
+#         return self.text

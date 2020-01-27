@@ -13,9 +13,6 @@
       <a href="{% url 'logout' %}">
         <button class="topmenu" id="login">Logout</button>
       </a>
-      <a>
-        <button class="topmenu" id="profile">Profile</button>
-      </a>
     </div>
     {% else %}
     <div id="menubar">
@@ -31,11 +28,11 @@
   
   </div>
   <div id="resultscontainer">
-    <restaurant-detail v-for="x in results" :rest-obj="x"></restaurant-detail>
+    <restaurant-detail v-for="x in results" :rest-obj="x" ></restaurant-detail>
+    <!-- <review-form v-if="reviewForm"></review-form> -->
     <review-detail v-for="x in results" :rev-obj="x"></review-detail>
   </div>
 </div>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -74,12 +71,18 @@ let vm = new Vue({
     search: "", //for input text in search menu
     selectedFilter: "",
     results: [],
+    reviewForm: false,
   },
   methods: {
     getFilter(e) {
       console.log("Get Filter Test  " + e); this.results = e;console.log(this.results);
 
-    }
+    },
+    reviewpayload(restaurant) {
+      this.reviewForm = true;
+      console.log(restaurant)
+
+    },
   },
 });
 

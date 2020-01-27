@@ -4,6 +4,8 @@ from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework import authentication, permissions, authtoken
 from rest_framework import filters
+from django.views.decorators.csrf import csrf_exempt # for csrf_exempt
+from django.utils.decorators import method_decorator # for csrf_exempt
 
 #local classes, models, etc.
 from users.models import CustomUser
@@ -12,7 +14,7 @@ from .permissions import IsAuthorOrReadOnly, IsApproved, IsAuthor, IsApprovedOrR
 from .serializers import RestaurantSerializer, ReviewSerializer, CuisineSerializer, SettingSerializer, UsersSerializer
 
 #Using view sets for easy and verbose representation of Models through the API.  Allows basic CRUD and
-
+@method_decorator(csrf_exempt, name='dispatch')
 class RestaurantViewSet(viewsets.ModelViewSet):
     #giving permission only to logged in users
     permission_classes = (IsAuthorOrReadOnly, IsApprovedOrReadOnly)
@@ -23,12 +25,14 @@ class RestaurantViewSet(viewsets.ModelViewSet):
     filter_backends =[filters.SearchFilter]
     search_fields = ['name','cuisines__options','settings__options','location']
 
+
+@method_decorator(csrf_exempt, name='dispatch')
 class ReviewViewSet(viewsets.ModelViewSet):
     #giving permission only to logged in users
 
     permission_classes = (IsAuthorOrReadOnly,IsApprovedOrReadOnly)
 
-    queryset = models.Review.objects.all()
+    queryset = models.Review.objects.all().order_by('-created')
     serializer_class = ReviewSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['restaurant__name','rating','created','body']
@@ -49,7 +53,9 @@ class SettingViewSet(viewsets.ModelViewSet):
     queryset = models.Setting.objects.all()
     serializer_class = SettingSerializer
 
+
 class UsersViewSet(viewsets.ModelViewSet):
+    # need to build an admin permission class in order to only let admin see users API?  But then would review ssystem work?
     queryset = CustomUser.objects.all()
     serializer_class = UsersSerializer
 
@@ -60,16 +66,16 @@ class UsersViewSet(viewsets.ModelViewSet):
 - Any APIException exceptions will be caught and mediated into appropriate responses. 
 - Incoming requests will be authenticated and appropriate permissions and/or throttle checks will be run before dispatching the request to the handler method.  
 '''
-class UserApprovalSystem(APIView):
-    '''This will be called after a user passes the quiz.  It will change CustumUser.approved from default=False to True. This gives them permission to make posts.'''
+# class UserApprovalSystem(APIView):
+#     '''This will be called after a user passes the quiz.  It will change CustumUser.approved from default=False to True. This gives them permission to make posts.'''
     
-    authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = (permissions.IsAuthenticated,)
+#     authentication_classes = [authentication.TokenAuthentication]
+#     permission_classes = (permissions.IsAuthenticated,)
     
-    def approval(self, request):
-        """ psuedo code.  
-        If user is logged in, go on (should be inherit from above):
-        If user passes the quiz send this view:
-        return self.user.approved = True """ 
-        request.user.approved = True
-        return "Success Url?"
+#     def approval(self, request):
+#         """ psuedo code.  
+#         If user is logged in, go on (should be inherit from above):
+#         If user passes the quiz send this view:
+#         return self.user.approved = True """ 
+#         request.user.approved = True
+#         return "Success Url?"

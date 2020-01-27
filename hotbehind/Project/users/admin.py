@@ -19,5 +19,11 @@ class CustomUserAdmin(UserAdmin):
         (None, {'fields': ('approved', 'role')}),
     )
 
+# class QuizAdmin(UserAdmin):
+#     add_form = AddQuizForm
+#     form = QuizForm
+#     model = Quiz
+#     list_display = ['question','answer']
+#     fieldsets = (None, {'fields': ('question','answer')})
 
 admin.site.register(CustomUser, CustomUserAdmin)

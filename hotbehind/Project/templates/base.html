@@ -23,27 +23,28 @@
   </head>
   <body>
     <!--Make a main to hold everything or use multiple vue apps-->
-    
+    {% csrf_token %}
+
     <main>
       {% block content %} {% endblock %}
     </main>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/vue"></script>
     <script>
-      Vue.component('search-bar',{
+      Vue.component("search-bar", {
         delimiters: ["[[", "]]"],
 
-        data: function(){
+        data: function() {
           return {
-            selectedFilter:"",
-            search:"",
-            results: [],
-          }
+            selectedFilter: "",
+            search: "",
+            results: []
+          };
         },
         props: [],
-        template: 
-        ` <div id="searcharea">
+        template: ` <div id="searcharea">
         <form id="searchform" class="form-horizontal">
           <input
             field="text"
@@ -67,7 +68,7 @@
           </button>
         </form>
       </div>`,
-      methods: {
+        methods: {
           getFilter() {
             if (this.selectedFilter == "Restaurants") {
               console.log("This is working!");
@@ -75,88 +76,146 @@
                 method: "get",
                 url: `/api/restaurants/?search=${this.search}`
               })
-                .then(res => this.$emit("givesearch",res.data))
+                .then(res => this.$emit("givesearch", res.data))
+                .catch(e => console.log(e));
             } else if (this.selectedFilter == "Reviews") {
               axios({
                 method: "get",
                 url: `/api/reviews/?search=${this.search}`
-              }).then(res => this.$emit("givesearch",res.data));
+              })
+                .then(res => this.$emit("givesearch", res.data))
+                .catch(e => console.log(e));
             }
           }
         }
       });
 
-      Vue.component("restaurant-detail", { 
+      Vue.component("restaurant-detail", {
         delimiters: ["[[", "]]"],
 
         data: function() {
-          return {    }
+          return {
+            reviewForm: false,
+            restaurant: this.restObj.name
+          };
         },
-        props: [
-          "rest-obj"
-        ],
+        props: ["rest-obj", "reviewForm"],
 
-        template: 
-          `
+        template: `
           <div class="restaurantcontainer">
             <img class="restaurantdetails photo" :src='restObj.photo'/>
             <h3 class="restaurantdetails restname"> [[restObj.name]] </h3>
             <p class="restaurantdetails hours"> [[restObj.hours]] </p>
             <p class="restaurantdetails location"> [[restObj.location]] </p>
-            <p class="restaurantdetails website"><a :href='restObj.website'> site link</a></p>
+            <p class="restaurantdetails website"><a :href='restObj.website'> site link</a> <button @click.prevent="sendevent()"> Review [[restObj.name]]  </button></p>
             <p class="restaurauntdetails settings" :restObj="settingstring" v-if="restObj.setting_info">Great for: [[restObj.setting_info]] </p>
-            <p class="restaurantdetails cuisines" :restObj="cuisinestring">Cuisines: [[restObj.cuisine_info]] </p>
+            <p class="restaurantdetails cuisines" :restObj="cuisinestring" >Cuisines: [[restObj.cuisine_info]] </p>
+            <review-form v-if="reviewForm" :restaurant="restObj"></review-form>
           </div>
 
           `,
-          computed: { //these computed properties are used during restaurant detail rendering.  They manipulate the array of objects for settings and cuisines and return a human readable string for better presentation and legibility.
-            settingstring: function(x) {
-              let stringed = ""; //initializing a dummy string to use in data manipulation
-              x.restObj.setting_info.forEach(element => { 
-                stringed += element.options + ", " //adding the value of each option to the string
-                });
-                let strlen = stringed.length;
-                console.log(strlen);
-                stringed = stringed.slice(0,strlen-2); //removing the last two characters based on the length of the string
-              
-                console.log(stringed)
-              x.restObj.setting_info = stringed //returing the proper variable, but redifined as the string version of the list
-              },
-            cuisinestring: function(x) {
-              let stringed = "";
-              x.restObj.cuisine_info.forEach(element => { 
-                stringed += element.options + ", "
-                });
-                let strlen = stringed.length;
-                console.log(strlen);
-                stringed = stringed.slice(0,strlen-2);
-              
-                console.log(stringed)
-              x.restObj.cuisine_info = stringed
-              }
-            }
+        computed: {
+          //these computed properties are used during restaurant detail rendering.  They manipulate the array of objects for settings and cuisines and return a human readable string for better presentation and legibility.
+          settingstring: function(x) {
+            let stringed = ""; //initializing a dummy string to use in data manipulation
+            x.restObj.setting_info.forEach(element => {
+              stringed += element.options + ", "; //adding the value of each option to the string
+            });
+            let strlen = stringed.length;
+            console.log(strlen);
+            stringed = stringed.slice(0, strlen - 2); //removing the last two characters based on the length of the string
+
+            console.log(stringed);
+            x.restObj.setting_info = stringed; //returing the proper variable, but redifined as the string version of the list
+          },
+          cuisinestring: function(x) {
+            let stringed = "";
+            x.restObj.cuisine_info.forEach(element => {
+              stringed += element.options + ", ";
+            });
+            let strlen = stringed.length;
+            console.log(strlen);
+            stringed = stringed.slice(0, strlen - 2);
+
+            console.log(stringed);
+            x.restObj.cuisine_info = stringed;
           }
-      )
+        },
+        methods: {
+          sendevent() {
+            // this.$emit('review', this.restObj)
+            (this.reviewForm = true), console.log(this.restObj + " hello");
+          }
+        }
+      });
       Vue.component("review-detail", {
-        delimiters:["[[","]]"],
-        props: [ "rev-obj"],//this will be revObj in the template
+        delimiters: ["[[", "]]"],
+        props: ["rev-obj"], //this will be revObj in the template
+        template: `
+        <div class="reviewcontainer">
+          <h3 class="reviewdetail restaurantname"> [[revObj.restaurant_info.name]] </h3>
+          <p class="reviewdetail userinfo"> <b>[[revObj.author_info.username]]</b> : [[revObj.author_info.role]]</p>
+          <p class="reviewdetail revdate"> [[revObj.created]] </p>
+          <p class="reviewdetail revrating"><b> [[revObj.rating]] Stars </b></p>
+          <p class="reviewdetail revbody"> [[revObj.body]] </p>
+        </div>
+        `
+      });
+      Vue.component("review-form", {
+        delimiters: ["[[", "]]"],
+        data: function() {
+          return {
+            csrf_token: ""
+          };
+        },
+        props: ["author", "restaurant", "review"], //this will likely need a restaurant object so that each button will know that it is a review for that specific restaurant
         template: 
         `
-        <div class="reviewcontainer">
-          <h3 class="reviewdetail"> [[revObj.restaurant_info.name]] </h3>
-          <p class="reviewdetail"> [[revObj.author_info.username]] <b> [[revObj.author_info.role]]</b></p>
-          <p class="reviewdetail"> [[moment(revObj.created).format(YYYY)]] </p>
-          <p class="reviewdetail"> [[revObj.rating]] </p>
-          <p class="reviewdetail"> [[revObj.body]] </p>
+        <div class="makereview" >
+          <form> 
+            <p> Author:  </p>
+            <p> It should be here ---> [[ restaurant.name ]] <-- testing if restaurant name is being passed
+            </p>
+            <input type="textarea" placeholder="Write your review here." class="reviewbody">
+            <select name="rating">
+              <option value="1">Poor</option>
+              <option value="2">Decent </option>
+              <option value="3">Good </option>
+              <option value="4">Great </option>
+              <option value="5">Excellent</option>
+            </select>
+            <input type="submit" value="submit" @click.prevent="postreview()">
+          </form>
         </div>
         `,
-        
-      })
+        methods: {
+          postreview() {
+            console.log(this.csrf_token);
 
-      
+            axios({
+              method: "post",
+              url: "/api/reviews/",
+              data: {
+                csrf_token: "",
+                Author: "",
+                Restaurant: "",
+                Body: "",
+                Rating: ""
+              },
+              headers: {
+                "X-CSRFToken": this.csrf_token
+              }
+            }).then(res => alert(res), console.log(res.data));
+          }
+        },
+        mounted: function() {
+          this.csrf_token = document.querySelector(
+            "input[name=csrfmiddlewaretoken]"
+          ).value;
+          console.log(this.csrf_token);
+        }
+      });
     </script>
     {% block script %} {% endblock %}
   </body>
 </html>
-
-

@@ -15,3 +15,13 @@ class CustomUserChangeForm(UserChangeForm):
         model = CustomUser
         # fields = ('username','email','approved', 'role')
         fields = UserCreationForm.Meta.fields + ('approved','role')
+
+# class QuizForm():
+#     class Meta:
+#         model = Quiz
+#         fields = ('question', 'answer')
+
+# class AddQuizForm():
+#     class Meta:
+#         model = Quiz
+#         fields = ('question','answer')
