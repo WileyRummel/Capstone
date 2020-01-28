@@ -144,7 +144,7 @@
         methods: {
           sendevent() {
             // this.$emit('review', this.restObj)
-            (this.reviewForm = true), console.log(this.restObj + " hello");
+            (this.reviewForm = true), console.log(this.restObj);
           }
         }
       });
@@ -166,18 +166,20 @@
         data: function() {
           return {
             csrf_token: "",
-            currentuser: request.user.id
+            currentuser: "",
+            reviewbody: "",
+            reviewrating: "",
             
           };
         },
-        props: ["author", "restaurant", "review"], //this will likely need a restaurant object so that each button will know that it is a review for that specific restaurant
+        props: ["author", "restaurant"], //this will likely need a restaurant object so that each button will know that it is a review for that specific restaurant
         template: `
         <div class="makereview" >
           <form> 
-            <p> Author:  </p>
+            <p> [[currentuser.username]]  </p>
             <p> [[restaurant.name]] </p>
-            <input type="textarea" placeholder="Write your review here." class="reviewbody">
-            <select name="rating">
+            <input type="textarea" placeholder="Write your review here." class="reviewbody" v-model="reviewbody">
+            <select name="rating" v-model="reviewrating">
               <option value="1">Poor</option>
               <option value="2">Decent </option>
               <option value="3">Good </option>
@@ -197,10 +199,10 @@
               url: "/api/reviews/",
               data: {
                 // csrf_token: this.csrf_token,
-                author: currentuser,
-                restaurant: restaurant.id,
-                body: "",
-                rating: ""
+                author: this.currentuser.id,
+                restaurant: this.restaurant.id,
+                body: this.reviewbody ,
+                rating: this.reviewrating,
               },
               headers: {
                 "X-CSRFToken": this.csrf_token
@@ -208,20 +210,20 @@
             }).then(res => alert(res), console.log(res.data));
           }
         },
-        mounted: function() {
-          this.csrf_token = document.querySelector(
-            "input[name=csrfmiddlewaretoken]"
-          ).value;
-          console.log(this.csrf_token);
-        },
+        mounted: 
         function() {
           axios({
             method: "get",
-            url: "/api/currentuser/"
+            url: "/api/currentuser",
           })
-            .then(res => console.log(res.data))
+            .then(res => console.log(res.data.username, this.currentuser = res.data))
             .catch(error => console.log(error));
-        }
+          this.csrf_token = document.querySelector(
+            "input[name=csrfmiddlewaretoken]"
+          ).value;
+          console.log(this.csrf_token);    
+        }, 
+        
       });
       Vue.component("restaurant-create", {
         delimiters: ["[[", "]]"],

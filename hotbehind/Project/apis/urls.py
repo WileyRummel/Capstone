@@ -2,8 +2,8 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 from rest_framework.request import Request
 
-from.views import ReviewViewSet, RestaurantViewSet, CuisineViewSet, SettingViewSet, UsersViewSet 
 # CurrentUserView
+from.views import ReviewViewSet, RestaurantViewSet, CuisineViewSet, SettingViewSet, UsersViewSet, CurrentUserView
 
 router = DefaultRouter()
 router.register('cuisines',CuisineViewSet, basename='cuisines')
@@ -17,9 +17,8 @@ router.register('users', UsersViewSet, basename='users')
 
 # router.register('currentuser', CurrentUserView, basename='currentuser')
 
-urlpatterns = router.urls
+urlpatterns =  [path('currentuser', CurrentUserView.as_view())] + router.urls
 
-#  [path('currentuser', CurrentUserView.as_view('get'))] + 
 
 
 # path('cuisines',ListCuisine.as_view()),
