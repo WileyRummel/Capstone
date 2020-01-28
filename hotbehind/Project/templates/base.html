@@ -165,17 +165,17 @@
         delimiters: ["[[", "]]"],
         data: function() {
           return {
-            csrf_token: ""
+            csrf_token: "",
+            currentuser: request.user.id
+            
           };
         },
         props: ["author", "restaurant", "review"], //this will likely need a restaurant object so that each button will know that it is a review for that specific restaurant
-        template: 
-        `
+        template: `
         <div class="makereview" >
           <form> 
             <p> Author:  </p>
-            <p> It should be here ---> [[ restaurant.name ]] <-- testing if restaurant name is being passed
-            </p>
+            <p> [[restaurant.name]] </p>
             <input type="textarea" placeholder="Write your review here." class="reviewbody">
             <select name="rating">
               <option value="1">Poor</option>
@@ -196,11 +196,11 @@
               method: "post",
               url: "/api/reviews/",
               data: {
-                csrf_token: "",
-                Author: "",
-                Restaurant: "",
-                Body: "",
-                Rating: ""
+                // csrf_token: this.csrf_token,
+                author: currentuser,
+                restaurant: restaurant.id,
+                body: "",
+                rating: ""
               },
               headers: {
                 "X-CSRFToken": this.csrf_token
@@ -213,6 +213,61 @@
             "input[name=csrfmiddlewaretoken]"
           ).value;
           console.log(this.csrf_token);
+        },
+        function() {
+          axios({
+            method: "get",
+            url: "/api/currentuser/"
+          })
+            .then(res => console.log(res.data))
+            .catch(error => console.log(error));
+        }
+      });
+      Vue.component("restaurant-create", {
+        delimiters: ["[[", "]]"],
+        data: function() {
+          return {
+            csrf_token: ""
+          };
+        },
+        props: ["author"],
+        template: `
+        <div class="createcontainer">
+          <form class="restaurantform">
+            <input type="text" placeholder:"restaurant name">
+            <input type="text" placeholder:"hours">
+            <input type="text" placeholder:"location">
+            <input type="text" placeholder:"cuisines">
+            <input type="text" placeholder:"settings">
+
+          </form>
+        </div>
+        `,
+        mounted: function() {
+          this.csrf_token = document.querySelector(
+            "input[name=csrfmiddlewaretoken]"
+          ).value;
+          console.log(this.csrf_token);
+        },
+        methods: {
+          //method to make a post request to submit a new restaurant to the api.
+          postrestaurant() {
+            axios({
+              method: "post",
+              url: "/api/restaurants/",
+              data: {
+                name: "",
+                location: "",
+                hours: "",
+                website: "",
+                cuisines: "",
+                settings: "" //will this work without cuisine_info and settings_info?  Seems weird.
+              },
+              headers: {
+                "X-CSRFToken": this.csrf_token
+              }
+            });
+          }
         }
       });
     </script>

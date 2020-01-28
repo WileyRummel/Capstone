@@ -1,9 +1,12 @@
 #build in django and DRF stuff
-# from django.response import response
+# from django.http import response, request
 from rest_framework import viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework import authentication, permissions, authtoken
 from rest_framework import filters
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework import viewsets
 from django.views.decorators.csrf import csrf_exempt # for csrf_exempt
 from django.utils.decorators import method_decorator # for csrf_exempt
 
@@ -59,7 +62,41 @@ class UsersViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UsersSerializer
 
+    @classmethod
+    def get_current(self, Request):
+        user = self.request.users
+        print(user)
+        return user
 
+
+
+    # def get_object(self):
+    #     pk = self.kwargs.get('pk')
+    #     if pk == "current":
+    #         return self.request.user
+    #     return super(UsersViewSet, self).get_object()
+
+
+# @api_view(['GET'])
+# def current_user(request):
+
+#     serializer = UsersSerializer(request.user)
+#     return response(serializer.data)
+
+
+# class CurrentUserView(viewsets.ModelViewSet):
+
+#     def get(self, request: Request):
+#         serializer = UsersSerializer
+#         return Response(serializer.data)
+
+    # def retrieve(self, request: Request, *args, **kwargs):
+    #     """
+    #     If provided 'pk' is "me" then return the current user.
+    #     """
+    #     if kwargs.get('pk') == 'me':
+    #         return Response(self.get_serializer(request.user).data)
+    #     return super().retrieve(request, args, kwargs)
 '''Setting up an API VIEW:
 - Request passed to the handler methods will be REST frameworks REQUEST instance, not Djangoe's HTTPREQUEST instances.  
 - Handler methods may return REST frameworks RESPONSE instead of Djangoes HTTPRESPONSE. The view will manage conent negotiation and setting the correst renderer on the response

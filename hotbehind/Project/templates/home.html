@@ -1,7 +1,7 @@
 <!-- templates/home.html -->
 {% extends 'base.html' %} {% block title %}Home{% endblock %} 
 {% block content%} 
-{% if user.is_authenticated %}
+{% if user.is_authenticated %} 
 {% else %}
 {% endif %}
 <div id="main">
@@ -9,18 +9,19 @@
     <h1 id="webtitle"><a href="{% url 'home' %}" id="home">FEED.ME</a></h1>
     <p id="mission">Food reviews from professionals for everyone</p>
     {% if user.is_authenticated %}
+    
     <div id="menubar">
       <a href="{% url 'logout' %}">
         <button class="topmenu" id="login">Logout</button>
       </a>
+        <button class="topmenu" id="createrest">New Restaurant</button>
     </div>
     {% else %}
     <div id="menubar">
-      <a href="{% url 'login' %}"
-        ><button class="topmenu" id="login">Login</button></a
-      >
-      <a href="{% url 'signup' %}"
-        ><button class="topmenu" id="SignUp">Sign Up</button>
+      <a href="{% url 'login' %}">
+        <button class="topmenu" id="login">Login</button></a>
+      <a href="{% url 'signup' %}">
+        <button class="topmenu" id="SignUp">Sign Up</button>
       </a>
     </div>
     {% endif %}

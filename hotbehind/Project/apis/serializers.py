@@ -47,6 +47,7 @@ class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         fields = (
             'username',
+            'id',
             'role',
         )
         model = CustomUser

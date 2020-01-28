@@ -31,7 +31,8 @@ class RestaurantCreateView(LoginRequiredMixin, CreateView):
 class ReviewCreateView(LoginRequiredMixin, CreateView):
     model = Review
     template_name = 'review_new.html'
-    fields = ['author','restaurant','body','rating','cuisines','settings']
+    fields = ['author','restaurant','body','rating']
+    
     def form_valid(self,form):
         return super().form_valid(form)
     

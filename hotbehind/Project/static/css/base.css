@@ -25,7 +25,7 @@ p {
     position: fixed;
     background:thistle;
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows:9vh 7vh;
     grid-template-areas: 
     "webtitle mission"
@@ -59,11 +59,12 @@ p {
 }
 #menubar {
     grid-area: menubar;
-    display: flex;
-    justify-content: flex-end;
+    display: inline-block;
+    justify-content: center;
     align-content: center;
     margin: auto;
 }
+
 #menubar > *{
     padding-left:2px;
 }
@@ -92,6 +93,10 @@ button, select, input {
     padding-top: 5px;
     align-content: flex-end;
     /*this works for smallest mobile */
+}
+
+#createrest {
+    width: auto;
 }
 #SignUp {
     width: 63px;
