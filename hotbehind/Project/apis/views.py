@@ -90,30 +90,3 @@ class CurrentUserView(APIView):
 #         return self.user.approved = True """ 
 #         request.user.approved = True
 #         return "Success Url?"
- # def retrieve(self, request: Request, *args, **kwargs):
-    #     """
-    #     If provided 'pk' is "me" then return the current user.
-    #     """
-    #     if kwargs.get('pk') == 'me':
-    #         return Response(self.get_serializer(request.user).data)
-    #     return super().retrieve(request, args, kwargs)
-    # @classmethod
-    # def get_current(self, Request):
-    #     user = self.request.users
-    #     print(user)
-    #     return user
-
-
-
-    # def get_object(self):
-    #     pk = self.kwargs.get('pk')
-    #     if pk == "current":
-    #         return self.request.user
-    #     return super(UsersViewSet, self).get_object()
-
-
-# @api_view(['GET'])
-# def current_user(request):
-
-#     serializer = UsersSerializer(request.user)
-#     return response(serializer.data)

@@ -217,6 +217,72 @@ button, select, input {
     width:50%;
     height: auto;
 }
+.restaurantform {
+    border: 2px solid black;
+    width: 90%;
+    margin: auto;
+    padding: 6px;
+    justify-items: center;
+    display: grid;
+    grid-template-columns: repeat(1fr, 7);
+    grid-template-rows: auto;
+    grid-template-areas: 
+    "namep createname"
+    "locationp createlocation"
+    "hoursp createhours"
+    "webp createwebsite"
+    "cuisinep settingp"
+    "selectcuisine selectsetting"
+    "createsubmit createsubmit";
+}
+#createname {
+    grid-area: createname;
+    width: auto;
+}
+#namep {
+    grid-area: namep
+}
+#createlocation {
+    grid-area: createlocation;
+    width: auto;
+
+}
+#locationp {
+    grid-area: locationp;
+}
+#createhours {
+    grid-area: createhours;
+    width: auto;
+
+}
+#hoursp {
+    grid-area: hoursp
+}
+#createwebsite {
+    grid-area: createwebsite;
+    width: auto;
+
+}
+#webp {
+    grid-area: webp;
+}
+#createsubmit {
+    grid-area: createsubmit;
+}
+#cuisinep {
+    grid-area: cuisinep;
+}
+#selectcuisine {
+    grid-area: selectcuisine;
+}
+#settingsp {
+    grid-area: settingp;
+}
+#selectsetting {
+    grid-area: selectsetting;
+}
+#
+
 @media screen and (min-width: 768px){
     /* Desktop CSS */
     #mission{

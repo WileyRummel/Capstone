@@ -46,8 +46,7 @@
 
         props: [],
 
-        template: 
-        ` <div id="searcharea">
+        template: ` <div id="searcharea">
         <form id="searchform" class="form-horizontal">
           <input
             field="text"
@@ -220,6 +219,10 @@
               console.log(x);
               if (x.status == "201") {
                 alert("Review Successfully posted");
+              } else if (x.status == "403") {
+                alert(
+                  "You made a forbidden request.  In order to make a review you must first become an approved user"
+                );
               } else {
                 alert(
                   "Oops... Something went wrong.  Make sure you are logged in on an approved account."
@@ -257,84 +260,93 @@
             hours: "",
             website: "",
             restaurantsetting: [],
-            restaurantcuisine: [],
+            restaurantcuisine: []
           };
         },
-
-        props: [],
 
         template: `
         <div class="createcontainer">
           <form class="restaurantform">
-            <input type="text" placeholder="restaurant name" v-model="name">
-            <input type="text" placeholder="hours" v-model="hours">
-            <input type="text" placeholder="location" v-model="location">
-            <p>Cuisines:</p>
-            <select v-model="restaurantcuisine">
+            <p id="namep">Restaurant Name </p>
+            <input type="text" placeholder="Required" v-model="name" id="createname">
+            <p id="hoursp">Hours of the restaurant</p>
+            <input type="text" placeholder="Optional" v-model="hours" id="createhours">
+            <p id="locationp">Location of the restaurant</p>
+            <input type="text" placeholder="Optional" v-model="location" id="createlocation">
+            <p id="cuisinep">Select a cuisine</p>
+            <select v-model="restaurantcuisine" id="selectcuisine">
               <option v-for="cuisine in restaurantcuisine" :value="cuisine.element.id">
                 [[cuisine.element.options]]
               </option> 
             </select>
-            <p> Great for this:</p>
-            <select v-model="restaurantsetting">
+            <p id="settingsp"> Great for this:</p>
+            <select v-model="restaurantsetting" id="selectsetting">
               <option v-for="setting in restaurantsetting" :value="setting.element.id" >
                 [[setting.element.options]]
               </option>
             </select>
-            <input type="url" placeholder="website" v-model="website">
-            <input type="submit" value="sumbit" @click.prevent="postrestaurant()">
+            <p id="webp">Website for the restaurant</p>
+            <input type="url" placeholder="Optional" v-model="website" id="createwebsite">
+            <input type="submit" value="sumbit" @click.prevent="postrestaurant()" id="createsubmit">
           </form>
         </div>
         `,
-        // for cuisines and settings build a select & options. Look in vue js v-for selector, form input bindings.  The option for loop as shown above likely won't work, but its the general idea
-        // mounted: function() {
-        //   this.csrf_token = document.querySelector(
-        //     "input[name=csrfmiddlewaretoken]"
-        //   ).value;
-        // },
+
         methods: {
           //method to make a post request to submit a new restaurant to the api.
           postrestaurant() {
             console.log("called the function"),
-            axios({
-              method: "post",
-              url: "/api/restaurants/",
-              data: {
-                name: this.name,
-                location: this.location,
-                hours: this.hours,
-                website: this.website,
-                photo: null,
-                cuisines: [this.restaurantcuisine],
-                settings: [this.restaurantsetting], //will this work without cuisine_info and settings_info?  Seems weird.
-              },
-              headers: {
-                "X-CSRFToken": this.csrf_token
-              }
-            }).then(res => {
-              if (res.status == "201") { 
-                alert("Restaurant Submission Successful! Thank You for helping the community with your submission. ")}
-              else {
-                alert("Sorry! Your restaurant submission failed to complete.  Check that you are logged into an approved account and try again.")
-              }});
+              axios({
+                method: "post",
+                url: "/api/restaurants/",
+                data: {
+                  name: this.name,
+                  location: this.location,
+                  hours: this.hours,
+                  website: this.website,
+                  photo: null, //only admin can add photos
+                  cuisines: [this.restaurantcuisine], //must be an array type
+                  settings: [this.restaurantsetting] //must be an array type
+                },
+                headers: {
+                  "X-CSRFToken": this.csrf_token //sending token with post call for authentication
+                }
+              }).then(res => {
+                //subission alerts.  Informs users of success or failure
+                if (res.status == "201") {
+                  alert(
+                    "Restaurant Submission Successful! Thank You for helping the community with your submission. "
+                  );
+                } else if (res.status == "403") {
+                  alert(
+                    "In order to submit a restaurant you must first be approved."
+                  );
+                } else {
+                  alert(
+                    "Sorry! Your restaurant submission failed to complete.  Check that you are logged into an approved account and try again."
+                  );
+                }
+              });
           }
         },
+
+        //mounted function below pull the list of cuisines and settings from the API and creates a local object storing them in componenet data.  This object is used to populate options for cuisines and settings in the restaurant submittal form.
         mounted: function() {
           axios({
             method: "get",
             url: "http://localhost:8000/api/cuisines/"
           }).then(response => {
             response.data.forEach(element => {
-              this.restaurantcuisine.push({element});
-            }),console.log(this.restaurantcuisine);
+              this.restaurantcuisine.push({ element });
+            });
           });
           axios({
             method: "get",
             url: "http://localhost:8000/api/settings/"
           }).then(response => {
             response.data.forEach(element => {
-              this.restaurantsetting.push({element});
-            }),console.log(this.restaurantsetting);
+              this.restaurantsetting.push({ element });
+            });
           });
           this.csrf_token = document.querySelector(
             "input[name=csrfmiddlewaretoken]"
