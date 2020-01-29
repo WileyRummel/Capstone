@@ -14,7 +14,7 @@
       <a href="{% url 'logout' %}">
         <button class="topmenu" id="login">Logout</button>
       </a>
-        <button class="topmenu" id="createrest">New Restaurant</button>
+        <button class="topmenu" id="createrest" v-on:>New Restaurant</button>
     </div>
     {% else %}
     <div id="menubar">
@@ -26,11 +26,10 @@
     </div>
     {% endif %}
     <search-bar v-on:givesearch="getFilter"></search-bar>
-  
   </div>
+  <!-- <div v-if=" 0 > restaurant-detail | review-detail"> </div> -->
   <div id="resultscontainer">
     <restaurant-detail v-for="x in results" :rest-obj="x" ></restaurant-detail>
-    <!-- <review-form v-if="reviewForm"></review-form> -->
     <review-detail v-for="x in results" :rev-obj="x"></review-detail>
   </div>
 </div>
@@ -81,10 +80,11 @@ let vm = new Vue({
     },
     reviewpayload(restaurant) {
       this.reviewForm = true;
-      console.log(restaurant)
-
-    },
-  },
+      console.log(restaurant)},
+    newrestaurant() {
+      
+    }
+      },
 });
 
 

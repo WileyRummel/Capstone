@@ -43,7 +43,9 @@
             results: []
           };
         },
+
         props: [],
+
         template: ` <div id="searcharea">
         <form id="searchform" class="form-horizontal">
           <input
@@ -68,10 +70,10 @@
           </button>
         </form>
       </div>`,
+
         methods: {
           getFilter() {
             if (this.selectedFilter == "Restaurants") {
-              console.log("This is working!");
               axios({
                 method: "get",
                 url: `/api/restaurants/?search=${this.search}`
@@ -99,6 +101,7 @@
             restaurant: this.restObj.name
           };
         },
+
         props: ["rest-obj", "reviewForm"],
 
         template: `
@@ -107,8 +110,9 @@
             <h3 class="restaurantdetails restname"> [[restObj.name]] </h3>
             <p class="restaurantdetails hours"> [[restObj.hours]] </p>
             <p class="restaurantdetails location"> [[restObj.location]] </p>
-            <p class="restaurantdetails website"><a :href='restObj.website'> site link</a> <button @click.prevent="sendevent()"> Review [[restObj.name]]  </button></p>
+            <p class="restaurantdetails website"><a :href='restObj.website'> site link</a> <button @click.prevent="sendevent()" id="reviewbtn" class="topmenu"> Review [[restObj.name]]  </button> </p>
             <p class="restaurauntdetails settings" :restObj="settingstring" v-if="restObj.setting_info">Great for: [[restObj.setting_info]] </p>
+            <p class="restaurantdetails settings" v-else>No setting information currently available. </p>
             <p class="restaurantdetails cuisines" :restObj="cuisinestring" >Cuisines: [[restObj.cuisine_info]] </p>
             <review-form v-if="reviewForm" :restaurant="restObj"></review-form>
           </div>
@@ -121,11 +125,11 @@
             x.restObj.setting_info.forEach(element => {
               stringed += element.options + ", "; //adding the value of each option to the string
             });
+
             let strlen = stringed.length;
-            console.log(strlen);
+
             stringed = stringed.slice(0, strlen - 2); //removing the last two characters based on the length of the string
 
-            console.log(stringed);
             x.restObj.setting_info = stringed; //returing the proper variable, but redifined as the string version of the list
           },
           cuisinestring: function(x) {
@@ -133,11 +137,11 @@
             x.restObj.cuisine_info.forEach(element => {
               stringed += element.options + ", ";
             });
+
             let strlen = stringed.length;
-            console.log(strlen);
+
             stringed = stringed.slice(0, strlen - 2);
 
-            console.log(stringed);
             x.restObj.cuisine_info = stringed;
           }
         },
@@ -150,7 +154,9 @@
       });
       Vue.component("review-detail", {
         delimiters: ["[[", "]]"],
+
         props: ["rev-obj"], //this will be revObj in the template
+
         template: `
         <div class="reviewcontainer">
           <h3 class="reviewdetail restaurantname"> [[revObj.restaurant_info.name]] </h3>
@@ -161,18 +167,21 @@
         </div>
         `
       });
+
       Vue.component("review-form", {
         delimiters: ["[[", "]]"],
+
         data: function() {
           return {
             csrf_token: "",
             currentuser: "",
             reviewbody: "",
-            reviewrating: "",
-            
+            reviewrating: ""
           };
         },
+
         props: ["author", "restaurant"], //this will likely need a restaurant object so that each button will know that it is a review for that specific restaurant
+
         template: `
         <div class="makereview" >
           <form> 
@@ -186,14 +195,13 @@
               <option value="4">Great </option>
               <option value="5">Excellent</option>
             </select>
-            <input type="submit" value="submit" @click.prevent="postreview()">
+            <input type="submit" value="submit" @click.prevent="postreview()" id="postreview">
           </form>
         </div>
         `,
+
         methods: {
           postreview() {
-            console.log(this.csrf_token);
-
             axios({
               method: "post",
               url: "/api/reviews/",
@@ -201,38 +209,56 @@
                 // csrf_token: this.csrf_token,
                 author: this.currentuser.id,
                 restaurant: this.restaurant.id,
-                body: this.reviewbody ,
-                rating: this.reviewrating,
+                body: this.reviewbody,
+                rating: this.reviewrating
               },
               headers: {
                 "X-CSRFToken": this.csrf_token
               }
-            }).then(res => alert(res), console.log(res.data));
+            }).then(x => {
+              console.log(x);
+              if (x.status == "201") {
+                alert("Review Successfully posted");} 
+              else {
+                alert(
+                  "Oops... Something went wrong.  Make sure you are logged in on an approved account."
+                );
+              }
+            });
           }
         },
-        mounted: 
-        function() {
+
+        mounted: function() {
           axios({
             method: "get",
-            url: "/api/currentuser",
+            url: "/api/currentuser"
           })
-            .then(res => console.log(res.data.username, this.currentuser = res.data))
+            .then(res =>
+              console.log(res.data.username, (this.currentuser = res.data))
+            )
             .catch(error => console.log(error));
           this.csrf_token = document.querySelector(
             "input[name=csrfmiddlewaretoken]"
           ).value;
-          console.log(this.csrf_token);    
-        }, 
-        
+          console.log(this.csrf_token);
+        }
       });
+
       Vue.component("restaurant-create", {
         delimiters: ["[[", "]]"],
+
         data: function() {
           return {
-            csrf_token: ""
+            csrf_token: "",
+            name: "",
+            location: "",
+            hours: "",
+            website: ""
           };
         },
-        props: ["author"],
+
+        props: [],
+
         template: `
         <div class="createcontainer">
           <form class="restaurantform">
@@ -241,6 +267,7 @@
             <input type="text" placeholder:"location">
             <input type="text" placeholder:"cuisines">
             <input type="text" placeholder:"settings">
+            <input type="url" placeholder:"website">
 
           </form>
         </div>
@@ -249,7 +276,6 @@
           this.csrf_token = document.querySelector(
             "input[name=csrfmiddlewaretoken]"
           ).value;
-          console.log(this.csrf_token);
         },
         methods: {
           //method to make a post request to submit a new restaurant to the api.
@@ -258,10 +284,10 @@
               method: "post",
               url: "/api/restaurants/",
               data: {
-                name: "",
-                location: "",
-                hours: "",
-                website: "",
+                name: this.name,
+                location: this.location,
+                hours: this.hours,
+                website: this.website,
                 cuisines: "",
                 settings: "" //will this work without cuisine_info and settings_info?  Seems weird.
               },
