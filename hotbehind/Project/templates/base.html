@@ -46,7 +46,8 @@
 
         props: [],
 
-        template: ` <div id="searcharea">
+        template: 
+        ` <div id="searcharea">
         <form id="searchform" class="form-horizontal">
           <input
             field="text"
@@ -218,8 +219,8 @@
             }).then(x => {
               console.log(x);
               if (x.status == "201") {
-                alert("Review Successfully posted");} 
-              else {
+                alert("Review Successfully posted");
+              } else {
                 alert(
                   "Oops... Something went wrong.  Make sure you are logged in on an approved account."
                 );
@@ -249,11 +250,14 @@
 
         data: function() {
           return {
+            // restaurantform: false,
             csrf_token: "",
             name: "",
             location: "",
             hours: "",
-            website: ""
+            website: "",
+            restaurantsetting: [],
+            restaurantcuisine: [],
           };
         },
 
@@ -262,24 +266,36 @@
         template: `
         <div class="createcontainer">
           <form class="restaurantform">
-            <input type="text" placeholder:"restaurant name">
-            <input type="text" placeholder:"hours">
-            <input type="text" placeholder:"location">
-            <input type="text" placeholder:"cuisines">
-            <input type="text" placeholder:"settings">
-            <input type="url" placeholder:"website">
-
+            <input type="text" placeholder="restaurant name" v-model="name">
+            <input type="text" placeholder="hours" v-model="hours">
+            <input type="text" placeholder="location" v-model="location">
+            <p>Cuisines:</p>
+            <select v-model="restaurantcuisine">
+              <option v-for="cuisine in restaurantcuisine" :value="cuisine.element.id">
+                [[cuisine.element.options]]
+              </option> 
+            </select>
+            <p> Great for this:</p>
+            <select v-model="restaurantsetting">
+              <option v-for="setting in restaurantsetting" :value="setting.element.id" >
+                [[setting.element.options]]
+              </option>
+            </select>
+            <input type="url" placeholder="website" v-model="website">
+            <input type="submit" value="sumbit" @click.prevent="postrestaurant()">
           </form>
         </div>
         `,
-        mounted: function() {
-          this.csrf_token = document.querySelector(
-            "input[name=csrfmiddlewaretoken]"
-          ).value;
-        },
+        // for cuisines and settings build a select & options. Look in vue js v-for selector, form input bindings.  The option for loop as shown above likely won't work, but its the general idea
+        // mounted: function() {
+        //   this.csrf_token = document.querySelector(
+        //     "input[name=csrfmiddlewaretoken]"
+        //   ).value;
+        // },
         methods: {
           //method to make a post request to submit a new restaurant to the api.
           postrestaurant() {
+            console.log("called the function"),
             axios({
               method: "post",
               url: "/api/restaurants/",
@@ -288,14 +304,41 @@
                 location: this.location,
                 hours: this.hours,
                 website: this.website,
-                cuisines: "",
-                settings: "" //will this work without cuisine_info and settings_info?  Seems weird.
+                photo: null,
+                cuisines: [this.restaurantcuisine],
+                settings: [this.restaurantsetting], //will this work without cuisine_info and settings_info?  Seems weird.
               },
               headers: {
                 "X-CSRFToken": this.csrf_token
               }
-            });
+            }).then(res => {
+              if (res.status == "201") { 
+                alert("Restaurant Submission Successful! Thank You for helping the community with your submission. ")}
+              else {
+                alert("Sorry! Your restaurant submission failed to complete.  Check that you are logged into an approved account and try again.")
+              }});
           }
+        },
+        mounted: function() {
+          axios({
+            method: "get",
+            url: "http://localhost:8000/api/cuisines/"
+          }).then(response => {
+            response.data.forEach(element => {
+              this.restaurantcuisine.push({element});
+            }),console.log(this.restaurantcuisine);
+          });
+          axios({
+            method: "get",
+            url: "http://localhost:8000/api/settings/"
+          }).then(response => {
+            response.data.forEach(element => {
+              this.restaurantsetting.push({element});
+            }),console.log(this.restaurantsetting);
+          });
+          this.csrf_token = document.querySelector(
+            "input[name=csrfmiddlewaretoken]"
+          ).value;
         }
       });
     </script>

@@ -14,7 +14,7 @@
       <a href="{% url 'logout' %}">
         <button class="topmenu" id="login">Logout</button>
       </a>
-        <button class="topmenu" id="createrest" v-on:>New Restaurant</button>
+        <button class="topmenu" id="createrest" @click="reviewForm = !reviewForm">New Restaurant</button>
     </div>
     {% else %}
     <div id="menubar">
@@ -27,10 +27,13 @@
     {% endif %}
     <search-bar v-on:givesearch="getFilter"></search-bar>
   </div>
-  <!-- <div v-if=" 0 > restaurant-detail | review-detail"> </div> -->
+
   <div id="resultscontainer">
+    <restaurant-create v-if="reviewForm"></restaurant-create>
     <restaurant-detail v-for="x in results" :rest-obj="x" ></restaurant-detail>
     <review-detail v-for="x in results" :rev-obj="x"></review-detail>
+  </div>
+  <div>
   </div>
 </div>
 
@@ -61,6 +64,7 @@ let vm = new Vue({
       cuisines: "",
       settings: "",
     },
+
     reviews: {
       author: "",
       rating: "",
@@ -68,23 +72,28 @@ let vm = new Vue({
       restaurant: "",
       created: "",
     },
+
     search: "", //for input text in search menu
     selectedFilter: "",
     results: [],
     reviewForm: false,
+    restaurantform: false,
   },
   methods: {
     getFilter(e) {
-      console.log("Get Filter Test  " + e); this.results = e;console.log(this.results);
-
+      this.results = e;
     },
+
     reviewpayload(restaurant) {
       this.reviewForm = true;
-      console.log(restaurant)},
+    },
+
     newrestaurant() {
+      this.restaurantform = true;
+      console.log("hello wiley")
       
     }
-      },
+  },
 });
 
 

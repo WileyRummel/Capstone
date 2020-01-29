@@ -9,6 +9,7 @@ class CuisineSerializer(serializers.ModelSerializer):
     class Meta:
         fields = (
             'options',
+            'id'
         )
         model = models.Cuisine
 
@@ -16,6 +17,7 @@ class SettingSerializer(serializers.ModelSerializer):
     class Meta:
         fields = (
             'options',
+            'id',
         )
         model = models.Setting
 
@@ -39,6 +41,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
             'cuisine_info',
             'photo',
         )
+        read_only_fields = ['photo']
         model = models.Restaurant
 
 
