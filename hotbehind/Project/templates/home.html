@@ -13,8 +13,8 @@
     <div id="menubar">
       <a href="{% url 'logout' %}">
         <button class="topmenu" id="login">Logout</button>
-      </a>
-        <button class="topmenu" id="createrest" @click="reviewForm = !reviewForm">New Restaurant</button>
+      </a>  
+        <button class="topmenu" id="createrest" @click="restaurantform= !restaurantform">New Restaurant</button>
     </div>
     {% else %}
     <div id="menubar">
@@ -29,11 +29,12 @@
   </div>
 
   <div id="resultscontainer">
-    <restaurant-create v-if="reviewForm"></restaurant-create>
-    <restaurant-detail v-for="x in results" :rest-obj="x" ></restaurant-detail>
-    <review-detail v-for="x in results" :rev-obj="x"></review-detail>
-  </div>
-  <div>
+    <!-- <div id="landing" v-if="">
+      <img src="media/images/linecooks.jpg" id="linecooks">
+    </div> -->
+    <restaurant-create v-if="restaurantform" ></restaurant-create>
+    <restaurant-detail v-if="" v-for="x in results" :rest-obj="x" ></restaurant-detail>
+    <review-detail v-if="" v-for="x in results" :rev-obj="x"></review-detail>
   </div>
 </div>
 
@@ -54,7 +55,7 @@ let vm = new Vue({
   delimiters: ["[[", "]]"],
   data: {
     csrf_token: "", //authentication
-    restaurants: {
+    restaurants: { 
       name: "",
       photo: "",
       hours: "",
@@ -89,7 +90,7 @@ let vm = new Vue({
     },
 
     newrestaurant() {
-      this.restaurantform = true;
+      // this.restaurantform = !this.restaurantform;
       console.log("hello wiley")
       
     }

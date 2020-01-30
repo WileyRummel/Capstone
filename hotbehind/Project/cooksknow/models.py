@@ -50,7 +50,7 @@ class Review(models.Model):
         (3, 'Good'),
         (4, 'Great'),
         (5, 'Exceptional'),
-    ) #this comes back as the string, but HTML display the number.  Research issue
+    ) 
 
     rating = models.IntegerField(choices=RATING_CHOICES, blank=False, null=True)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

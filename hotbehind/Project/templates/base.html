@@ -97,12 +97,12 @@
 
         data: function() {
           return {
-            reviewForm: false,
+            showForm: false,
             restaurant: this.restObj.name
           };
         },
 
-        props: ["rest-obj", "reviewForm"],
+        props: ["rest-obj"],
 
         template: `
           <div class="restaurantcontainer">
@@ -114,7 +114,7 @@
             <p class="restaurauntdetails settings" :restObj="settingstring" v-if="restObj.setting_info">Great for: [[restObj.setting_info]] </p>
             <p class="restaurantdetails settings" v-else>No setting information currently available. </p>
             <p class="restaurantdetails cuisines" :restObj="cuisinestring" >Cuisines: [[restObj.cuisine_info]] </p>
-            <review-form v-if="reviewForm" :restaurant="restObj"></review-form>
+            <review-form v-on:click="showForm = showForm" v-if="showForm" :restaurant="restObj"></review-form>
           </div>
 
           `,
@@ -147,8 +147,7 @@
         },
         methods: {
           sendevent() {
-            // this.$emit('review', this.restObj)
-            (this.reviewForm = true), console.log(this.restObj);
+            (this.showForm = !this.showForm);
           }
         }
       });
@@ -181,13 +180,14 @@
         },
 
         props: ["author", "restaurant"], //this will likely need a restaurant object so that each button will know that it is a review for that specific restaurant
+            // <p> [[currentuser.username]]  </p>
+            // <p> [[restaurant.name]] </p>
+            // <input type="textarea" placeholder="Write your review here." class="reviewbody" v-model="reviewbody">
 
         template: `
         <div class="makereview" >
           <form> 
-            <p> [[currentuser.username]]  </p>
-            <p> [[restaurant.name]] </p>
-            <input type="textarea" placeholder="Write your review here." class="reviewbody" v-model="reviewbody">
+            <textarea class="reviewbody" v-model="reviewbody" placeholder="Write your review here"></textarea>
             <select name="rating" v-model="reviewrating">
               <option value="1">Poor</option>
               <option value="2">Decent </option>
@@ -210,7 +210,7 @@
                 author: this.currentuser.id,
                 restaurant: this.restaurant.id,
                 body: this.reviewbody,
-                rating: this.reviewrating
+                rating: this.reviewrating,
               },
               headers: {
                 "X-CSRFToken": this.csrf_token
@@ -219,16 +219,16 @@
               console.log(x);
               if (x.status == "201") {
                 alert("Review Successfully posted");
-              } else if (x.status == "403") {
-                alert(
-                  "You made a forbidden request.  In order to make a review you must first become an approved user"
-                );
-              } else {
-                alert(
-                  "Oops... Something went wrong.  Make sure you are logged in on an approved account."
-                );
               }
-            });
+              else if (x.status == "403") {
+                alert(
+                  "You made a forbidden request.  In order to make a review you must first become an approved user");
+              } 
+              else {
+                alert(
+                  "Oops... Something went wrong.  Make sure you are logged in on an approved account.");
+              }
+            }).catch(error => alert(error));
           }
         },
 
@@ -269,10 +269,12 @@
           <form class="restaurantform">
             <p id="namep">Restaurant Name </p>
             <input type="text" placeholder="Required" v-model="name" id="createname">
-            <p id="hoursp">Hours of the restaurant</p>
-            <input type="text" placeholder="Optional" v-model="hours" id="createhours">
             <p id="locationp">Location of the restaurant</p>
             <input type="text" placeholder="Optional" v-model="location" id="createlocation">
+            <p id="hoursp">Hours of the restaurant</p>
+            <input type="text" placeholder="Optional" v-model="hours" id="createhours">
+            <p id="webp">Website for the restaurant</p>
+            <input type="url" placeholder="Optional" v-model="website" id="createwebsite">
             <p id="cuisinep">Select a cuisine</p>
             <select v-model="restaurantcuisine" id="selectcuisine">
               <option v-for="cuisine in restaurantcuisine" :value="cuisine.element.id">
@@ -285,8 +287,6 @@
                 [[setting.element.options]]
               </option>
             </select>
-            <p id="webp">Website for the restaurant</p>
-            <input type="url" placeholder="Optional" v-model="website" id="createwebsite">
             <input type="submit" value="sumbit" @click.prevent="postrestaurant()" id="createsubmit">
           </form>
         </div>

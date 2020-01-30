@@ -1,6 +1,7 @@
 #build in django and DRF stuff
 # from django.http import response, request
 from rest_framework import viewsets, permissions
+from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView
 from rest_framework import authentication, permissions, authtoken
 from rest_framework import filters
@@ -58,6 +59,7 @@ class SettingViewSet(viewsets.ModelViewSet):
 
 
 class UsersViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAdminUser,)
     # need to build an admin permission class in order to only let admin see users API?  But then would review ssystem work?
     queryset = CustomUser.objects.all()
     serializer_class = UsersSerializer

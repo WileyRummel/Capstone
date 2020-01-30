@@ -1,5 +1,5 @@
 body {
-    background: rgb(168, 182, 250);
+    background: rgb(44, 44, 44);
     color: rgb(0, 0, 0);
     justify-items: center;
     margin: auto;
@@ -108,6 +108,7 @@ button, select, input {
 
 .restaurantcontainer {
     margin: auto;
+    margin-bottom: 10px;
     background: rgb(35, 184, 230);
     padding: 3px;
     padding-left: 3px;;
@@ -126,6 +127,9 @@ button, select, input {
     "hours hours"
     "website website"
     "review review";
+    box-shadow: 3px 5px 9px 0px rgba(255, 255, 255, 0.75);
+    border-radius: 2%;
+
 }
 
 .photo {
@@ -166,6 +170,7 @@ button, select, input {
 }
 .reviewcontainer {
     margin: auto;
+    margin-bottom: 6px;
     width: 90%;
     justify-self: center;
     justify-items: center;
@@ -179,6 +184,8 @@ button, select, input {
     "body body";
     border: 2px solid black;
     background: rgb(35, 184, 230);
+    box-shadow: 3px 5px 9px 0px rgba(255, 255, 255, 0.75);
+    border-radius: 2%;
 }
 .restaurantname {
     grid-area: restaurantname;
@@ -205,13 +212,17 @@ button, select, input {
 .makereview {
     grid-area: review;
     margin: auto;
-    width: 80%;
+    margin-bottom: 8px;
+    width: 60%;
+    background: white;
     justify-self: center;
     justify-content: center;
     border: 2px solid black;    
     color: black;
     display: flex;
     padding: 5px;
+    box-shadow: 3px 5px 9px 0px rgba(31, 31, 31, 0.75);
+    border-radius: 2%;
 }
 .reviewbody {
     width:50%;
@@ -234,6 +245,8 @@ button, select, input {
     "cuisinep settingp"
     "selectcuisine selectsetting"
     "createsubmit createsubmit";
+    box-shadow: 3px 5px 9px 0px rgba(255, 255, 255, 0.75);
+    border-radius: 2%;
 }
 #createname {
     grid-area: createname;
@@ -281,11 +294,16 @@ button, select, input {
 #selectsetting {
     grid-area: selectsetting;
 }
-#
+#linecooks {
+    width: 60vw;
+    height: auto;
+    justify-items: auto;
+}
 
-@media screen and (min-width: 768px){
+@media screen and (min-width: 768px) {
     /* Desktop CSS */
-    #mission{
+   
+    #mission {
         font-size: large;
         padding-right: 60px;
     }
@@ -308,9 +326,22 @@ button, select, input {
         width: 70px;
         height: 32px;
     }
-    .reviewbody {
-        width:50%;
-        height: auto;
-    }
 
+    #resultscontainer {
+        padding-top: 17vh;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-template-areas: none;
+    }
+    .reviewbody {
+        width:90%;
+        height: 60%;
+    }
+    .restaurantcontainer {
+        width: 65%;
+    }
+    .reviewcontainer {
+        width: 65%;
+    }
 }

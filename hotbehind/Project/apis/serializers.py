@@ -46,7 +46,6 @@ class RestaurantSerializer(serializers.ModelSerializer):
 
 
 class UsersSerializer(serializers.ModelSerializer):
-
     class Meta:
         fields = (
             'username',
