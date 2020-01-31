@@ -25,16 +25,22 @@
       </a>
     </div>
     {% endif %}
-    <search-bar v-on:givesearch="getFilter"></search-bar>
+    <search-bar v-on:givesearch="getFilter" v-on:changefilter="selectedFilter = $event"></search-bar>
   </div>
 
   <div id="resultscontainer">
-    <!-- <div id="landing" v-if="">
+    <div id="landing" v-if="!selectedFilter" v-if="hidewelcome">
+      <p>We strive to give you professional reviews from industry professionals. Feel free to sign up! Help the community by adding new restaurants, and reviewing your favorites.   </p>
       <img src="media/images/linecooks.jpg" id="linecooks">
-    </div> -->
-    <restaurant-create v-if="restaurantform" ></restaurant-create>
-    <restaurant-detail v-if="" v-for="x in results" :rest-obj="x" ></restaurant-detail>
-    <review-detail v-if="" v-for="x in results" :rev-obj="x"></review-detail>
+    </div>
+    <restaurant-create v-if="restaurantform" @click="!hidewelcome"></restaurant-create>
+    <div v-if="selectedFilter == 'Restaurants'">
+      <restaurant-detail  v-for="x in results" :rest-obj="x"></restaurant-detail>
+    </div>
+    
+    <div v-if="selectedFilter == 'Reviews'"> 
+      <review-detail  v-for="x in results" :rev-obj="x"></review-detail>
+    </div>
   </div>
 </div>
 
@@ -79,6 +85,7 @@ let vm = new Vue({
     results: [],
     reviewForm: false,
     restaurantform: false,
+    hidewelcome: false,
   },
   methods: {
     getFilter(e) {

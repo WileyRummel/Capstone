@@ -6,13 +6,14 @@
   <head>
     <meta charset="utf-8" />
     <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <link
-      rel="stylesheet"
-      href="https://necolas.github.io/normalize.css/8.0.1/normalize.css"
+    rel="stylesheet"
+    href="https://necolas.github.io/normalize.css/8.0.1/normalize.css"
     />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -46,7 +47,8 @@
 
         props: [],
 
-        template: ` <div id="searcharea">
+        template: ` 
+        <div id="searcharea">
         <form id="searchform" class="form-horizontal">
           <input
             field="text"
@@ -61,11 +63,7 @@
             <!-- <option @change="($event)">Cuisines</option>
         <option @change="($event)">Settings</option> -->
           </select>
-          <button
-            class="topmenu"
-            id="search"
-            @click.prevent="getFilter($event)"
-          >
+          <button class="topmenu" id="search" @click.prevent="getFilter($event)">
             Search
           </button>
         </form>
@@ -78,14 +76,21 @@
                 method: "get",
                 url: `/api/restaurants/?search=${this.search}`
               })
-                .then(res => this.$emit("givesearch", res.data))
+                .then(res => {
+                  this.$emit("givesearch", res.data)
+                  this.$emit("changefilter", this.selectedFilter)
+                }
+              )
                 .catch(e => console.log(e));
             } else if (this.selectedFilter == "Reviews") {
               axios({
                 method: "get",
                 url: `/api/reviews/?search=${this.search}`
               })
-                .then(res => this.$emit("givesearch", res.data))
+                .then(res => {
+                  this.$emit("givesearch", res.data)
+                  this.$emit("changefilter", this.selectedFilter)
+                })
                 .catch(e => console.log(e));
             }
           }
@@ -111,18 +116,18 @@
             <p class="restaurantdetails hours"> [[restObj.hours]] </p>
             <p class="restaurantdetails location"> [[restObj.location]] </p>
             <p class="restaurantdetails website"><a :href='restObj.website'> site link</a> <button @click.prevent="sendevent()" id="reviewbtn" class="topmenu"> Review [[restObj.name]]  </button> </p>
-            <p class="restaurauntdetails settings" :restObj="settingstring" v-if="restObj.setting_info">Great for: [[restObj.setting_info]] </p>
+            <p class="restaurauntdetails settings" :restObj="settingstring" v-if="restObj.setting_info">Great for: [[settingstring]] </p>
             <p class="restaurantdetails settings" v-else>No setting information currently available. </p>
-            <p class="restaurantdetails cuisines" :restObj="cuisinestring" >Cuisines: [[restObj.cuisine_info]] </p>
+            <p class="restaurantdetails cuisines" :restObj="cuisinestring"> Cuisines: [[cuisinestring]] </p>
             <review-form v-on:click="showForm = showForm" v-if="showForm" :restaurant="restObj"></review-form>
           </div>
 
           `,
         computed: {
           //these computed properties are used during restaurant detail rendering.  They manipulate the array of objects for settings and cuisines and return a human readable string for better presentation and legibility.
-          settingstring: function(x) {
+          settingstring: function() {
             let stringed = ""; //initializing a dummy string to use in data manipulation
-            x.restObj.setting_info.forEach(element => {
+            this.restObj.setting_info.forEach(element => {
               stringed += element.options + ", "; //adding the value of each option to the string
             });
 
@@ -130,11 +135,11 @@
 
             stringed = stringed.slice(0, strlen - 2); //removing the last two characters based on the length of the string
 
-            x.restObj.setting_info = stringed; //returing the proper variable, but redifined as the string version of the list
+            return stringed; //returing the proper variable, but redifined as the string version of the list
           },
-          cuisinestring: function(x) {
+          cuisinestring: function() {
             let stringed = "";
-            x.restObj.cuisine_info.forEach(element => {
+            this.restObj.cuisine_info.forEach(element => {
               stringed += element.options + ", ";
             });
 
@@ -142,7 +147,7 @@
 
             stringed = stringed.slice(0, strlen - 2);
 
-            x.restObj.cuisine_info = stringed;
+            return stringed;
           }
         },
         methods: {
@@ -155,16 +160,21 @@
         delimiters: ["[[", "]]"],
 
         props: ["rev-obj"], //this will be revObj in the template
-
+        methods: {
+          fixtime(x) {
+            return moment(x).format('MM-DD-YYYY')
+          }
+        },
         template: `
         <div class="reviewcontainer">
           <h3 class="reviewdetail restaurantname"> [[revObj.restaurant_info.name]] </h3>
           <p class="reviewdetail userinfo"> <b>[[revObj.author_info.username]]</b> : [[revObj.author_info.role]]</p>
-          <p class="reviewdetail revdate"> [[revObj.created]] </p>
+          <p class="reviewdetail revdate"> [[fixtime(revObj.created)]] </p>
           <p class="reviewdetail revrating"><b> [[revObj.rating]] Stars </b></p>
           <p class="reviewdetail revbody"> [[revObj.body]] </p>
         </div>
-        `
+        `,
+        
       });
 
       Vue.component("review-form", {
@@ -275,7 +285,7 @@
             <input type="text" placeholder="Optional" v-model="hours" id="createhours">
             <p id="webp">Website for the restaurant</p>
             <input type="url" placeholder="Optional" v-model="website" id="createwebsite">
-            <p id="cuisinep">Select a cuisine</p>
+            <p id="cuisinep">Select a cuisine:</p>
             <select v-model="restaurantcuisine" id="selectcuisine">
               <option v-for="cuisine in restaurantcuisine" :value="cuisine.element.id">
                 [[cuisine.element.options]]
