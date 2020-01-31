@@ -10,7 +10,8 @@
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-  <button type="submit">Login</button>
+  <button type="submit" class="loginbtn topmenu">Login</button>
   </form>
+  <h3 class="homebtn"><a href="{% url 'home' %} ">Home</a></h3>
 </div>
 {% endblock %}

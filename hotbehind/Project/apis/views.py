@@ -18,7 +18,7 @@ from .permissions import IsAuthorOrReadOnly, IsApproved, IsAuthor, IsApprovedOrR
 from .serializers import RestaurantSerializer, ReviewSerializer, CuisineSerializer, SettingSerializer, UsersSerializer
 
 #Using view sets for easy and verbose representation of Models through the API.  Allows basic CRUD and
-@method_decorator(csrf_exempt, name='dispatch')
+# @method_decorator(csrf_exempt, name='dispatch')
 class RestaurantViewSet(viewsets.ModelViewSet):
     #giving permission only to logged in users
     permission_classes = (IsAuthorOrReadOnly, IsApprovedOrReadOnly)
@@ -30,10 +30,9 @@ class RestaurantViewSet(viewsets.ModelViewSet):
     search_fields = ['name','cuisines__options','settings__options','location']
 
 
-@method_decorator(csrf_exempt, name='dispatch')
+# @method_decorator(csrf_exempt, name='dispatch')
 class ReviewViewSet(viewsets.ModelViewSet):
     #giving permission only to logged in users
-
     permission_classes = (IsAuthorOrReadOnly,IsApprovedOrReadOnly)
 
     queryset = models.Review.objects.all().order_by('-created')

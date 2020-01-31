@@ -11,7 +11,7 @@ p {
     padding: none;
 }
 
-.topmenu, #postreview {
+.topmenu, #postreview, .showRevs {
     border-radius: 5%;
     color: white;
     background: #4AB0EB;
@@ -124,9 +124,14 @@ button, select, input {
     "location location"
     "hours hours"
     "website website"
+    "showrevs showrevs"
     "review review";
     box-shadow: 3px 5px 9px 0px rgba(58, 58, 58, 0.75);
     border-radius: 2%;
+}
+.showRevs {
+    grid-area: showrevs;
+    justify-self: center;
 }
 .restaurantcontainer:nth-child(even) {
     background: rgb(158, 168, 223);
@@ -211,12 +216,13 @@ button, select, input {
     border: 1px solid black; 
     
 }
-#reviewbtn {
+#reviewbtn, .showRevs {
     width: auto;
 }
 .makereview {
     grid-area: review;
     margin: auto;
+    margin-top: 8px;
     margin-bottom: 8px;
     width: 60%;
     background: #9EBCDF;
@@ -302,28 +308,53 @@ button, select, input {
     grid-area: selectsetting;
 }
 #linecooks {
-    width: 60vw;
+    width: 57vw;
     height: auto;
-    justify-items: auto;
-}
-#loginform {
+    justify-self: center;
     margin: auto;
-    margin-top: 25vh;
+
+}
+#loginform, .signupcontainer {
+    margin: auto;
+    margin-top: 20vh;
     padding: 6px;
     display: flex;
     flex-direction: column;
+    
     align-self: center;
     justify-items: center;
-    width: 50%;
+    width: 60%;
     height: auto;
-    background: #4AB0EB;
-    box-shadow: 3px 5px 9px 0px rgba(250, 250, 250, 0.75);
+    background: #9EBCDF;
+    box-shadow: 3px 5px 9px 0px rgba(94, 94, 94, 0.75);
     border-radius: 2%;
 }
+#loginform > * {
+    text-align: center;
+}
+#landing {
+    padding: 6px;
+    border: 1px solid black;
+    border-radius: 2%;
+    margin-top: 24px;
+    margin: auto;
+    width: 60%;
+    justify-self: center;
+}
+.noresults {
+    justify-self: center;
+    margin: auto;
+    text-align: center;
+}
+.homebtn, a {
+    text-align: center;
+    color: black;
+}
+.loginbtn, .signupbtn {
+    text-align: center;
+}
 
-/* #resultscontainer:nth-child(even) {
-    background: rgb(0, 0, 0);
-} */
+
 @media screen and (min-width: 768px) {
     /* Desktop CSS */
     #webtitle {
@@ -339,7 +370,7 @@ button, select, input {
         justify-items: center;
         width: 25%;
         height: auto;
-        background: #4AB0EB;
+        background: #9EBCDF;
         box-shadow: 3px 5px 9px 0px rgba(78, 78, 78, 0.75);
         border-radius: 2%;
     }
@@ -424,7 +455,7 @@ button, select, input {
         margin: auto;
         margin-bottom: 10px;
         background: #9EBCDF;
-        padding: 6pxpx;
+        padding: 6px;
         padding-left: 3px;;
         border: 2px solid black;
         font-size: smaller;
@@ -440,6 +471,7 @@ button, select, input {
         "photo location"
         "hours hours"
         "website website"
+        "showrevs showrevs"
         "review review";
         box-shadow: 3px 5px 9px 0px rgba(58, 58, 58, 0.75);
         border-radius: 2%;
@@ -477,4 +509,18 @@ button, select, input {
     .reviewcontainer:nth-child(even){
         background: rgb(158, 168, 223);
     }
+    .loginbtn, .signupbtn {
+        text-align: center;
+    }
+    /* .signupcontainer {
+        display: flex;
+        flex-direction: column;
+    } */
+    .signupbtn {
+    text-align: center; 
+    margin: 0 auto;
+    display: block;
+    
+    }
+    
 }

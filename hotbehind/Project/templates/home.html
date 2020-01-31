@@ -29,13 +29,16 @@
   </div>
 
   <div id="resultscontainer">
-    <div id="landing" v-if="!selectedFilter" v-if="hidewelcome">
-      <p>We strive to give you professional reviews from industry professionals. Feel free to sign up! Help the community by adding new restaurants, and reviewing your favorites.   </p>
+    <div id="landing" v-if="!selectedFilter" v-show="!restaurantform">
+      <p>Feed.Me is a restaurant review forum made to serve the people who know dining best.  Reviews should be professional, clear, and honest.  Sign up and take the approval quiz for to gain the ability to Review and submit new Restaurants.  Search Restaurants by Name, Location, Cuisines and Settings. Search Reviews by Keywords, Restaurant, or Rating.  </p>
       <img src="media/images/linecooks.jpg" id="linecooks">
     </div>
-    <restaurant-create v-if="restaurantform" @click="!hidewelcome"></restaurant-create>
+    <restaurant-create v-if="restaurantform"></restaurant-create>
     <div v-if="selectedFilter == 'Restaurants'">
-      <restaurant-detail  v-for="x in results" :rest-obj="x"></restaurant-detail>
+      <div v-for="x in results" >
+        <restaurant-detail  :rest-obj="x"></restaurant-detail>
+ 
+      </div>
     </div>
     
     <div v-if="selectedFilter == 'Reviews'"> 
@@ -61,31 +64,31 @@ let vm = new Vue({
   delimiters: ["[[", "]]"],
   data: {
     csrf_token: "", //authentication
-    restaurants: { 
-      name: "",
-      photo: "",
-      hours: "",
-      location: "",
-      website: "",
-      rating: "",
-      cuisines: "",
-      settings: "",
-    },
+    // restaurants: { 
+    //   name: "",
+    //   photo: "",
+    //   hours: "",
+    //   location: "",
+    //   website: "",
+    //   rating: "",
+    //   cuisines: "",
+    //   settings: "",
+    // },
 
-    reviews: {
-      author: "",
-      rating: "",
-      body: "",
-      restaurant: "",
-      created: "",
-    },
-
+    // reviews: {
+    //   author: "",
+    //   rating: "",
+    //   body: "",
+    //   restaurant: "",
+    //   created: "",
+    // },
+    
     search: "", //for input text in search menu
     selectedFilter: "",
     results: [],
     reviewForm: false,
     restaurantform: false,
-    hidewelcome: false,
+    showreviewlist: false,
   },
   methods: {
     getFilter(e) {

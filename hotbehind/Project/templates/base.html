@@ -103,24 +103,36 @@
         data: function() {
           return {
             showForm: false,
-            restaurant: this.restObj.name
+            restaurant: this.restObj.name,
+            reviewresults: [],
+            showreviewlist: false,
+
           };
         },
 
         props: ["rest-obj"],
 
         template: `
+        <div>
           <div class="restaurantcontainer">
             <img class="restaurantdetails photo" :src='restObj.photo'/>
             <h3 class="restaurantdetails restname"> [[restObj.name]] </h3>
             <p class="restaurantdetails hours"> [[restObj.hours]] </p>
             <p class="restaurantdetails location"> [[restObj.location]] </p>
             <p class="restaurantdetails website"><a :href='restObj.website'> site link</a> <button @click.prevent="sendevent()" id="reviewbtn" class="topmenu"> Review [[restObj.name]]  </button> </p>
-            <p class="restaurauntdetails settings" :restObj="settingstring" v-if="restObj.setting_info">Great for: [[settingstring]] </p>
+            <p class="restaurauntdetails settings" :restObj="settingstring" v-if="settingstring.length > 0">Great for: [[settingstring]] </p>
             <p class="restaurantdetails settings" v-else>No setting information currently available. </p>
-            <p class="restaurantdetails cuisines" :restObj="cuisinestring"> Cuisines: [[cuisinestring]] </p>
+            <p class="restaurantdetails cuisines" :restObj="cuisinestring" v-if="cuisinestring.length > 0"> Cuisines: [[cuisinestring]] </p>
+            <p class="restaurantdetails cuisines" v-else>No cuisine information currently available. </p>
             <review-form v-on:click="showForm = showForm" v-if="showForm" :restaurant="restObj"></review-form>
+            <button class="showRevs" @click.prevent="showreviews($event)">Reviews about [[restObj.name]]</button>
           </div>
+          <div v-if="showreviewlist">
+            
+            <review-detail v-for="review in reviewresults" v-bind:rev-obj="review"></review-detail>
+            <p v-if="reviewresults.length == 0" class="noresults">There aren't yet any reviews for [[restObj.name]].</p>
+          </div>
+        </div>
 
           `,
         computed: {
@@ -153,6 +165,19 @@
         methods: {
           sendevent() {
             (this.showForm = !this.showForm);
+          },
+          showreviews() {
+            this.showreviewlist= !this.showreviewlist
+            console.log("Hello Austen")
+            axios({
+              method: "get",
+              url: `/api/reviews/?search=${this.restObj.name}`
+            }).then( 
+                res => {
+                  this.reviewresults = res.data;
+                  console.log(this.reviewresults)
+
+              })
           }
         }
       });
@@ -199,6 +224,7 @@
           <form> 
             <textarea class="reviewbody" v-model="reviewbody" placeholder="Write your review here"></textarea>
             <select name="rating" v-model="reviewrating">
+              <option disable value=""> Rating </option>
               <option value="1">Poor</option>
               <option value="2">Decent </option>
               <option value="3">Good </option>
@@ -305,7 +331,6 @@
         methods: {
           //method to make a post request to submit a new restaurant to the api.
           postrestaurant() {
-            console.log("called the function"),
               axios({
                 method: "post",
                 url: "/api/restaurants/",
