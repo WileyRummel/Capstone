@@ -35,14 +35,25 @@
     </div>
     <restaurant-create v-if="restaurantform"></restaurant-create>
     <div v-if="selectedFilter == 'Restaurants'">
-      <div v-for="x in results" >
-        <restaurant-detail  :rest-obj="x"></restaurant-detail>
- 
+    <div v-if="results.length >= 1">
+        <div v-for="x in results" >
+          <restaurant-detail  :rest-obj="x"></restaurant-detail>
+        </div>
       </div>
+    <div v-else>
+      <p class="noresults">No Results found</p>
+      <img src="media/images/404.png" class="oopsimg">
+    </div>      
     </div>
     
     <div v-if="selectedFilter == 'Reviews'"> 
-      <review-detail  v-for="x in results" :rev-obj="x"></review-detail>
+      <div v-if="results.length >= 1">
+        <review-detail  v-for="x in results" :rev-obj="x"></review-detail>
+      </div>
+      <div v-else>
+        <p class="noresults">No Results found</p>
+        <img src="media/images/404.png" class="oopsimg">
+      </div> 
     </div>
   </div>
 </div>
@@ -63,26 +74,7 @@ let vm = new Vue({
   el: "#main",
   delimiters: ["[[", "]]"],
   data: {
-    csrf_token: "", //authentication
-    // restaurants: { 
-    //   name: "",
-    //   photo: "",
-    //   hours: "",
-    //   location: "",
-    //   website: "",
-    //   rating: "",
-    //   cuisines: "",
-    //   settings: "",
-    // },
-
-    // reviews: {
-    //   author: "",
-    //   rating: "",
-    //   body: "",
-    //   restaurant: "",
-    //   created: "",
-    // },
-    
+    csrf_token: "", //authentication    
     search: "", //for input text in search menu
     selectedFilter: "",
     results: [],
@@ -99,11 +91,10 @@ let vm = new Vue({
       this.reviewForm = true;
     },
 
-    newrestaurant() {
-      // this.restaurantform = !this.restaurantform;
-      console.log("hello wiley")
+    // newrestaurant() {
+    //   // this.restaurantform = !this.restaurantform;
       
-    }
+    // }
   },
 });
 

@@ -353,7 +353,13 @@ button, select, input {
 .loginbtn, .signupbtn {
     text-align: center;
 }
-
+.oopsimg {
+    display: block;
+    width: 20%;
+    height: auto;
+    text-align: center;
+    margin: auto;
+}
 
 @media screen and (min-width: 768px) {
     /* Desktop CSS */
@@ -521,6 +527,13 @@ button, select, input {
     margin: 0 auto;
     display: block;
     
+    }
+    .oopsimg {
+        display: block;
+        width: 20%;
+        height: auto;
+        text-align: center;
+        margin: auto;
     }
     
 }
