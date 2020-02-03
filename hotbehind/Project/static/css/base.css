@@ -482,6 +482,9 @@ button, select, input {
         box-shadow: 3px 5px 9px 0px rgba(58, 58, 58, 0.75);
         border-radius: 2%;
     }
+    .restaurantcontainer:nth-child(even) {
+        background: rgb(158, 168, 223);
+    }
     .photo {
         align-self: center;
         margin-top: 16px;
@@ -518,10 +521,7 @@ button, select, input {
     .loginbtn, .signupbtn {
         text-align: center;
     }
-    /* .signupcontainer {
-        display: flex;
-        flex-direction: column;
-    } */
+   
     .signupbtn {
     text-align: center; 
     margin: 0 auto;
@@ -535,5 +535,6 @@ button, select, input {
         text-align: center;
         margin: auto;
     }
+    
     
 }
