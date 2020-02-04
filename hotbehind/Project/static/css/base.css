@@ -1,10 +1,13 @@
 body {
-    background: #F7F7F9;
+    background: rgb(224, 224, 224);
     color: rgb(0, 0, 0);
     justify-items: center;
     margin: auto;
     font-family: 'Roboto Condensed', sans-serif;
 
+}
+#landing {
+    background: rgb(251, 251, 251);
 }
 p {
     color: black;
@@ -119,6 +122,7 @@ button, select, input {
     grid-template-areas: 
     "photo photo"
     "name name"
+    "avg avg"
     "cuisine cuisine"
     "setting setting"
     "location location"
@@ -128,6 +132,9 @@ button, select, input {
     "review review";
     box-shadow: 3px 5px 9px 0px rgba(58, 58, 58, 0.75);
     border-radius: 2%;
+}
+.avg { 
+    grid-area: avg;
 }
 .showRevs {
     grid-area: showrevs;
@@ -141,6 +148,7 @@ button, select, input {
     width: auto;
     grid-area: photo;
     justify-self: center;
+    text-align: center;
 }
 .restname {
     grid-area: name;
@@ -472,6 +480,7 @@ button, select, input {
         grid-template-areas: 
         "photo name"
         "photo name"
+        "photo avg"
         "photo cuisine"
         "photo setting"
         "photo location"
@@ -482,6 +491,9 @@ button, select, input {
         box-shadow: 3px 5px 9px 0px rgba(58, 58, 58, 0.75);
         border-radius: 2%;
     }
+    .avg {
+        grid-area: avg;
+    }
     .restaurantcontainer:nth-child(even) {
         background: rgb(158, 168, 223);
     }
@@ -489,9 +501,10 @@ button, select, input {
         align-self: center;
         margin-top: 16px;
         height: auto;
-        width: 250px;
+        width: 65%;
         grid-area: photo;
         justify-self: center;
+        border-radius: 2%;
     }
     .hours {
         grid-area: hours;

@@ -6,6 +6,7 @@ from users.models import CustomUser
 
 
 class CuisineSerializer(serializers.ModelSerializer):
+    """Cuisine Serializer brings Cuisine Model Fields to the REST API.  ID field is present for easy relationship matching, options is present for string readable cuisine names."""
     class Meta:
         fields = (
             'options',
@@ -14,6 +15,7 @@ class CuisineSerializer(serializers.ModelSerializer):
         model = models.Cuisine
 
 class SettingSerializer(serializers.ModelSerializer):
+    """Setting Serializer brings the Setting model to the REST API. The fields are options: setting name strings, and ID: for lookups"""
     class Meta:
         fields = (
             'options',
@@ -40,6 +42,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
             'setting_info',
             'cuisine_info',
             'photo',
+            'avg_rating',
         )
         read_only_fields = ['photo']
         model = models.Restaurant
@@ -56,9 +59,6 @@ class UsersSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     #these info subSerializers are to get a string representation of the respective models(source) instead of the PK.  ex: cuisines = American, not cuisines = 1
-
-    # setting_info = SettingSerializer(many=True, read_only=True,source='settings')
-    # cuisine_info = CuisineSerializer(many=True, read_only=True,source='cuisines')
     restaurant_info = RestaurantSerializer(many=False, read_only=True, source='restaurant')
     author_info = UsersSerializer(many=False, read_only=True, source="author")
     

@@ -36,15 +36,10 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self,form):
         return super().form_valid(form)
     
-    # def test_func(self):
-    #     obj = self.get_object()
-    #     return self.request.user == obj.author
-
 class ReviewDetailView(DetailView):
     model: Review
     template_name = 'review_detail.html'
-    # filter_backends = [filters.SearchFilter]
-    # search_fields = ['restaurant','rating','created']
+
 
     def get_queryset(self):
         return Review.objects.order_by('-created')
