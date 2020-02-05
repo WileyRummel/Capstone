@@ -111,9 +111,10 @@
           };
         },
 
-        props: ["rest-obj"],
+        props: ["rest-obj", ],
 
-        template: `
+        template: 
+        `
         <div>
           <div class="restaurantcontainer">
             <img class="restaurantdetails photo" :src='restObj.photo'/>
@@ -121,7 +122,7 @@
             <p class="restaurantdetails avg" v-if="restObj.avg_rating"> Average Reviewer Score: [[restObj.avg_rating]] / 5</p>
             <p class="restaurantdetails avg" v-else> No reviews for [[restObj.name]] yet.</p>
             <p class="restaurantdetails hours"> [[restObj.hours]] </p>
-            <p class="restaurantdetails location"> [[restObj.location]] </p>
+            <p class="restaurantdetails location"> <a :href="'https://www.google.com/maps/place/' + [[restObj.location]]" >[[restObj.location]] </a> </p>
             <p class="restaurantdetails website"><a :href='restObj.website'> site link</a> <button @click.prevent="sendevent()" id="reviewbtn" class="topmenu"> Review [[restObj.name]]  </button> </p>
             <p class="restaurauntdetails settings" :restObj="settingstring" v-if="settingstring.length > 0">Great for: [[settingstring]] </p>
             <p class="restaurantdetails settings" v-else>No setting information currently available. </p>
