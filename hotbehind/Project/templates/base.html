@@ -92,7 +92,7 @@
                   this.$emit("givesearch", res.data)
                   this.$emit("changefilter", this.selectedFilter)
                 })
-                .catch(e => console.log(e));
+                .catch(e => alert("Oops! We had an error during the handling of your request.  Try reloading the page, or making sure you are logged in."));
             }
           }
         }
@@ -177,8 +177,6 @@
             }).then( 
                 res => {
                   this.reviewresults = res.data;
-                  console.log(this.reviewresults)
-
               })
           }
         }
@@ -254,7 +252,6 @@
                 "X-CSRFToken": this.csrf_token
               }
             }).then(x => {
-              console.log(x);
               if (x.status == "201") {
                 alert("Review Successfully posted");
               }
@@ -266,7 +263,7 @@
                 alert(
                   "Oops... Something went wrong.  Make sure you are logged in on an approved account.");
               }
-            }).catch(error => alert(error));
+            }).catch(error => alert("Oops! We had an error during the handling of your request.  Try reloading the page, or making sure you are logged in."));
           }
         },
 
@@ -276,13 +273,12 @@
             url: "/api/currentuser"
           })
             .then(res =>
-              console.log(res.data.username, (this.currentuser = res.data))
+              (this.currentuser = res.data)
             )
             .catch(error => console.log(error));
           this.csrf_token = document.querySelector(
             "input[name=csrfmiddlewaretoken]"
           ).value;
-          console.log(this.csrf_token);
         }
       });
 
@@ -363,7 +359,7 @@
                     "Sorry! Your restaurant submission failed to complete.  Check that you are logged into an approved account and try again."
                   );
                 }
-              });
+              }).catch(e => alert("Oops! We had an error during the handling of your request.  Try reloading the page, or making sure you are logged in."))
           }
         },
 
